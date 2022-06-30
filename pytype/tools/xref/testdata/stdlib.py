@@ -1,7 +1,6 @@
 # pylint: skip-file
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import os
 
 #- @path ref vname(":module:", "pystdlib", _, "pytd:os.path", "python")

@@ -1,7 +1,6 @@
 """Generic functions."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import collections
 import contextlib
 import itertools

@@ -1,7 +1,6 @@
 """Initializes and checks the environment needed to run pytype."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import logging
 import os
 import sys

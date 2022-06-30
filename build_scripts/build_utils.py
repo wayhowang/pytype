@@ -1,7 +1,6 @@
 """Module with common utilities used by other build and test scripts."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import json
 import os
 import shutil

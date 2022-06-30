@@ -1,7 +1,6 @@
 """Import and set up the imports_map."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import collections
 import logging
 import os

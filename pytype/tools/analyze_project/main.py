@@ -1,7 +1,6 @@
 """Analyze an entire project using pytype."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import logging
 import os
 import sys

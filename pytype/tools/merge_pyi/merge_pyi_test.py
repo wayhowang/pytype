@@ -1,5 +1,4 @@
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import collections
 import difflib
 import logging

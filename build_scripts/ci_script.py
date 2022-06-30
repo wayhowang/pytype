@@ -2,7 +2,6 @@
 """A simple script to run CI build steps."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import collections
 import os
 import sys

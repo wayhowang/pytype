@@ -1,7 +1,6 @@
 """Use pytype to analyze and infer types for an entire project."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import logging
 import os
 import subprocess

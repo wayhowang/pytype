@@ -1,7 +1,6 @@
 """Merges type annotations from pyi files into the corresponding py files."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import difflib
 import enum
 import os

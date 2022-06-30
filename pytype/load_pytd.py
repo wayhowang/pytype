@@ -1,7 +1,6 @@
 """Load and link .pyi files."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import dataclasses
 import logging
 import os

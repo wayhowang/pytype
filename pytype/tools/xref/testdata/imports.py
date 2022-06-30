@@ -2,7 +2,6 @@
 
 #- @#0os ref/imports ModuleOs
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import os
 #- @#0os ref/imports ModuleOs
 #- @os_alias defines/binding OsAlias

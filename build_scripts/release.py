@@ -14,7 +14,6 @@ If mode is "TEST", then the release will be pushed to testpypi. If the mode is
 """
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import argparse
 import os
 import shutil

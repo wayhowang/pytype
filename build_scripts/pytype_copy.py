@@ -6,7 +6,6 @@ Usage:
 """
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import argparse
 import os
 import shutil

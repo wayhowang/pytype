@@ -1,7 +1,6 @@
 """Representation of modules."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import dataclasses
 import os
 from typing import Sequence

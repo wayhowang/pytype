@@ -1,7 +1,6 @@
 """Tests for file_utils.py."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 import os
 
 from pytype import file_utils

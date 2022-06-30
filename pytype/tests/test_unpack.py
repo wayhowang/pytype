@@ -1,7 +1,6 @@
 """Test unpacking."""
 
 from pytype.tools import path as path_tools
-from pytype.tools import path as path_tools
 from pytype import file_utils
 from pytype.tests import test_base
 
