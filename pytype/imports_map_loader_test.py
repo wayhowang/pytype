@@ -1,10 +1,10 @@
 """Tests for imports_map_loader.py."""
 
-import tempfile
 import textwrap
 
 from pytype import file_utils
 from pytype import imports_map_loader
+from pytype.tools import tempfile as compatible_tempfile
 
 import unittest
 
@@ -14,7 +14,7 @@ class ImportMapLoaderTest(unittest.TestCase):
 
   def test_read_imports_info(self):
     """Test reading an imports_info file into ImportsInfo."""
-    with tempfile.NamedTemporaryFile() as fi:
+    with compatible_tempfile.NamedTemporaryFile() as fi:
       fi.write(textwrap.dedent("""
         a/b/__init__.py prefix/1/a/b/__init__.py~
         a/b/b.py prefix/1/a/b/b.py~suffix

@@ -5,13 +5,13 @@ import contextlib
 import io as builtins_io
 import os
 import sys
-import tempfile
 import textwrap
 import traceback
 
 from pytype import config
 from pytype import io
 from pytype.pytd import pytd
+from pytype.tools import tempfile as compatible_tempfile
 
 import unittest
 
@@ -26,7 +26,7 @@ class IOTest(unittest.TestCase):
   @contextlib.contextmanager
   def _tmpfile(self, contents):
     tempfile_options = {"mode": "w", "suffix": ".txt", "encoding": "utf-8"}
-    with tempfile.NamedTemporaryFile(**tempfile_options) as f:
+    with compatible_tempfile.NamedTemporaryFile(**tempfile_options) as f:
       f.write(contents)
       f.flush()
       yield f
