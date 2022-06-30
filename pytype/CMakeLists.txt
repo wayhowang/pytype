@@ -232,6 +232,8 @@ py_library(
     file_utils
   SRCS
     file_utils.py
+  DEPS
+    pytype.tools.path_tools
 )
 
 py_library(
@@ -239,6 +241,8 @@ py_library(
     imports_map_loader
   SRCS
     imports_map_loader.py
+  DEPS
+    pytype.tools.path_tools
 )
 
 py_library(
@@ -270,6 +274,7 @@ py_library(
     .module_utils
     pytype.pyi.parser
     pytype.pytd.pytd
+    pytype.tools.path_tools
 )
 
 py_library(
@@ -307,6 +312,8 @@ py_library(
     module_utils
   SRCS
     module_utils.py
+  DEPS
+    pytype.tools.path_tools
 )
 
 py_library(
@@ -347,6 +354,7 @@ py_library(
     pytype_source_utils.py
   DEPS
     pytype.stubs.stubs
+    pytype.tools.path_tools
 )
 
 py_library(
@@ -391,6 +399,8 @@ py_library(
     _utils
   SRCS
     utils.py
+  DEPS
+    pytype.tools.path_tools
 )
 
 py_library(
@@ -485,6 +495,8 @@ py_test(
     .config
     .io
     pytype.pytd.pytd
+    pytype.tools.tempfile
+    pytype.tools.path_tools
 )
 
 py_test(
@@ -494,6 +506,7 @@ py_test(
     file_utils_test.py
   DEPS
     .file_utils
+    pytype.tools.path_tools
 )
 
 py_test(
@@ -504,6 +517,7 @@ py_test(
   DEPS
     .file_utils
     .module_utils
+    pytype.tools.path_tools
 )
 
 py_test(
@@ -513,6 +527,7 @@ py_test(
     pytype_source_utils_test.py
   DEPS
     .pytype_source_utils
+    pytype.tools.path_tools
 )
 
 py_test(
@@ -639,6 +654,7 @@ py_test(
     pytype.pytd.pytd
     pytype.stubs.stubs
     pytype.tests.test_base
+    pytype.tools.path_tools
 )
 
 py_test(
@@ -650,6 +666,7 @@ py_test(
     .file_utils
     .imports_map_loader
     pytype.stubs.stubs
+    pytype.tools.tempfile
 )
 
 py_test(
@@ -659,6 +676,7 @@ py_test(
     metrics_test.py
   DEPS
     .metrics
+    pytype.tools.tempfile
 )
 
 py_test(
