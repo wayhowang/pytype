@@ -75,7 +75,7 @@ def path_to_module_name(filename):
     # that in our imports_info map. If there is an extension, it needs to be
     # a python source or stub file, so ".py*" should cover all the cases.
     return None
-  module_name = filename.replace(os.path.sep, ".")
+  module_name = filename.replace(os.path.sep, ".").replace('/', ".")
   # strip __init__ suffix
   module_name, _, _ = module_name.partition(".__init__")
   return module_name
