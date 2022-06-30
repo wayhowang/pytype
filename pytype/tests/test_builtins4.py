@@ -85,7 +85,7 @@ class MapTest(test_base.BaseTest):
   def test_abspath(self):
     self.Check("""
       import os.path
-      map(os.path.abspath, [''])
+      map(path_tools.abspath, [''])
     """)
 
   def test_protocol(self):

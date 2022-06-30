@@ -19,25 +19,25 @@ class TestTypeshedLoading(parser_test_base.ParserTest):
   def test_get_typeshed_file(self):
     filename, data = self.ts.get_module_file(
         "stdlib", "errno", self.python_version)
-    self.assertEqual("errno.pyi", os.path.basename(filename))
+    self.assertEqual("errno.pyi", path_tools.basename(filename))
     self.assertIn("errorcode", data)
 
   def test_get_typeshed_dir(self):
     filename, data = self.ts.get_module_file(
         "stdlib", "logging", self.python_version)
-    self.assertEqual("__init__.pyi", os.path.basename(filename))
+    self.assertEqual("__init__.pyi", path_tools.basename(filename))
     self.assertIn("LogRecord", data)
 
   def test_parse_type_definition(self):
     filename, ast = typeshed.parse_type_definition(
         "stdlib", "_random", self.options)
-    self.assertEqual(os.path.basename(filename), "_random.pyi")
+    self.assertEqual(path_tools.basename(filename), "_random.pyi")
     self.assertIn("_random.Random", [cls.name for cls in ast.classes])
 
   def test_get_typeshed_missing(self):
     if not self.ts.missing:
       return  # nothing to test
-    self.assertIn(os.path.join("stdlib", "pytypecanary"), self.ts.missing)
+    self.assertIn(path_tools.join("stdlib", "pytypecanary"), self.ts.missing)
     _, data = self.ts.get_module_file(
         "stdlib", "pytypecanary", self.python_version)
     self.assertEqual(data, builtin_stubs.DEFAULT_SRC)

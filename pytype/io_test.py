@@ -76,7 +76,7 @@ class IOTest(unittest.TestCase):
 
   def test_generate_pyi_with_options(self):
     with self._tmpfile("x: int") as pyi:
-      pyi_name, _ = os.path.splitext(os.path.basename(pyi.name))
+      pyi_name, _ = path_tools.splitext(path_tools.basename(pyi.name))
       with self._tmpfile(
           f"{pyi_name} {pyi.name}") as imports_map:
         src = "import {mod}; y = {mod}.x".format(mod=pyi_name)

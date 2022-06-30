@@ -12,14 +12,14 @@ class PytypeSourceUtilsTest(unittest.TestCase):
 
   def setUp(self):
     super().setUp()
-    self.root = os.path.dirname(__file__)
+    self.root = path_tools.dirname(__file__)
 
   def test_pytype_source_dir(self):
     self.assertEqual(self.root, pytype_source_utils.pytype_source_dir())
 
   def test_get_full_path(self):
     self.assertEqual(
-        os.path.join(self.root, "foo/bar"),
+        path_tools.join(self.root, "foo/bar"),
         pytype_source_utils.get_full_path("foo/bar"))
     self.assertEqual(
         "/foo/bar",

@@ -116,7 +116,7 @@ class TestUnpack(test_base.BaseTest):
     self.Check("""
       import os
       xs: list
-      os.path.join('x', *xs)
+      path_tools.join('x', *xs)
     """)
 
   def test_overloaded_function(self):

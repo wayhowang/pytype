@@ -45,7 +45,7 @@ class Typeshed:
   def __init__(self):
     self._env_home = home = os.getenv("TYPESHED_HOME")
     if home:
-      if not os.path.isdir(home):
+      if not path_tools.isdir(home):
         raise OSError("Could not find a typeshed installation in "
                       "$TYPESHED_HOME directory %s" % home)
       self._root = home
@@ -57,23 +57,23 @@ class Typeshed:
 
   def _load_file(self, path):
     if self._env_home:
-      filename = os.path.join(self._env_home, path)
+      filename = path_tools.join(self._env_home, path)
       with open(filename) as f:
         return filename, f.read()
     else:
-      filepath = os.path.join(self._root, path)
+      filepath = path_tools.join(self._root, path)
       return filepath, pytype_source_utils.load_text_file(filepath)
 
   def _file_exists(self, relpath):
     """Checks whether the given path, relative to the typeshed root, exists."""
     if self._env_home:
-      return os.path.exists(os.path.join(self._root, relpath))
+      return path_tools.exists(path_tools.join(self._root, relpath))
     try:
       # For a non-par pytype installation, load_text_file will either succeed,
       # raise FileNotFoundError, or raise IsADirectoryError.
       # For a par installation, load_text_file will raise FileNotFoundError for
       # both a nonexistent file and a directory.
-      pytype_source_utils.load_text_file(os.path.join("typeshed", relpath))
+      pytype_source_utils.load_text_file(path_tools.join("typeshed", relpath))
     except FileNotFoundError:
       try:
         # For a non-par installation, we know at this point that relpath does
@@ -90,10 +90,10 @@ class Typeshed:
   def _list_files(self, basedir):
     """Lists files recursively in a basedir relative to typeshed root."""
     if self._env_home:
-      fs = pytype_source_utils.list_files(os.path.join(self._root, basedir))
+      fs = pytype_source_utils.list_files(path_tools.join(self._root, basedir))
     else:
       fs = pytype_source_utils.list_pytype_files(
-          os.path.join("typeshed", basedir))
+          path_tools.join("typeshed", basedir))
     return [f for f in fs if "@python2" not in f]
 
   def _load_missing(self):
@@ -115,7 +115,7 @@ class Typeshed:
         {name: ((min_major, min_minor), (max_major, max_minor))}
       The max tuple can be `None`.
     """
-    _, text = self._load_file(os.path.join("stdlib", "VERSIONS"))
+    _, text = self._load_file(path_tools.join("stdlib", "VERSIONS"))
     versions = {}
     for line in text.splitlines():
       line2 = line.split("#")[0].strip()
@@ -150,16 +150,16 @@ class Typeshed:
     top_level_stubs = set()  # packages with stub files outside @python2
     no_py3_meta = set()  # packages with `python3 = false` metadata entry
     for third_party_file in self._list_files("stubs"):
-      parts = third_party_file.split(os.path.sep)
+      parts = third_party_file.split(path_tools.sep)
       if parts[-1] == "METADATA.toml":  # {package}/METADATA.toml
-        _, md_file = self._load_file(os.path.join("stubs", third_party_file))
+        _, md_file = self._load_file(path_tools.join("stubs", third_party_file))
         metadata = toml.loads(md_file)
         if not metadata.get("python3", True):
           no_py3_meta.add(parts[0])
       elif parts[1] != "@tests":  # {package}/{module}[/{submodule}]
         if parts[-1].endswith(".pyi"):
           top_level_stubs.add(parts[0])
-        name, _ = os.path.splitext(parts[1])
+        name, _ = path_tools.splitext(parts[1])
         modules[parts[0]].add(name)
     py3_stubs = top_level_stubs - no_py3_meta
     packages = collections.defaultdict(set)
@@ -203,13 +203,13 @@ class Typeshed:
       IOError: if file not found
     """
     module_parts = module.split(".")
-    module_path = os.path.join(*module_parts)
+    module_path = path_tools.join(*module_parts)
     paths = []
     if toplevel == "stdlib":
       # Stubs for the stdlib 'foo' module are located in stdlib/foo.
       # The VERSIONS file tells us whether stdlib/foo exists and what versions
       # it targets.
-      path = os.path.join(toplevel, module_path)
+      path = path_tools.join(toplevel, module_path)
       if (self._is_module_in_typeshed(module_parts, version) or
           path in self.missing):
         paths.append(path)
@@ -219,13 +219,13 @@ class Typeshed:
       # TODO(rechen): It would be more correct to check what packages are
       # currently installed and only consider those.
       for package in sorted(self._third_party_packages[module_parts[0]]):
-        paths.append(os.path.join("stubs", package, module_path))
+        paths.append(path_tools.join("stubs", package, module_path))
     for path_rel in paths:
       # Give precedence to MISSING_FILE
       if path_rel in self.missing:
-        return (os.path.join(self._root, "nonexistent", path_rel + ".pyi"),
+        return (path_tools.join(self._root, "nonexistent", path_rel + ".pyi"),
                 builtin_stubs.DEFAULT_SRC)
-      for path in [os.path.join(path_rel, "__init__.pyi"), path_rel + ".pyi"]:
+      for path in [path_tools.join(path_rel, "__init__.pyi"), path_rel + ".pyi"]:
         try:
           name, src = self._load_file(path)
           return name, src
@@ -257,8 +257,8 @@ class Typeshed:
     typeshed_subdirs = ["stdlib"]
     for packages in self._third_party_packages.values():
       for package in packages:
-        typeshed_subdirs.append(os.path.join("stubs", package))
-    return [os.path.join(self._root, d) for d in typeshed_subdirs]
+        typeshed_subdirs.append(path_tools.join("stubs", package))
+    return [path_tools.join(self._root, d) for d in typeshed_subdirs]
 
   def get_pytd_paths(self):
     """Gets the paths to pytype's version-specific pytd files."""
@@ -275,7 +275,7 @@ class Typeshed:
       if "stdlib" in parts:
         # Check supported versions for stubs directly in stdlib/.
         module_parts = module_utils.strip_init_suffix(
-            os.path.splitext(filename)[0].split("/"))
+            path_tools.splitext(filename)[0].split("/"))
         if not self._is_module_in_typeshed(module_parts, python_version):
           continue
       yield filename
@@ -313,7 +313,7 @@ class Typeshed:
 
   def read_blacklist(self):
     """Read the typeshed blacklist."""
-    _, text = self._load_file(os.path.join("tests", "pytype_exclude_list.txt"))
+    _, text = self._load_file(path_tools.join("tests", "pytype_exclude_list.txt"))
     for line in text.splitlines():
       if "#" in line:
         line = line[:line.index("#")]
@@ -324,11 +324,11 @@ class Typeshed:
   def blacklisted_modules(self):
     """Return the blacklist, as a list of module names. E.g. ["x", "y.z"]."""
     for path in self.read_blacklist():
-      parts = path.split(os.path.sep)  # E.g. ["stdlib", "html", "parser.pyi"]
+      parts = path.split(path_tools.sep)  # E.g. ["stdlib", "html", "parser.pyi"]
       if parts[0] == "stdlib":
-        filename = os.path.sep.join(parts[1:])
+        filename = path_tools.sep.join(parts[1:])
       else:
-        filename = os.path.sep.join(parts[2:])
+        filename = path_tools.sep.join(parts[2:])
       mod = module_utils.path_to_module_name(filename)
       if mod:
         yield mod

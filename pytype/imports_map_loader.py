@@ -17,11 +17,11 @@ def _read_imports_map(options_info_path, open_function):
       line = line.strip()
       if line:
         short_path, path = line.split(" ", 1)
-        short_path, _ = os.path.splitext(short_path)  # drop extension
+        short_path, _ = path_tools.splitext(short_path)  # drop extension
         imports_multimap[short_path].add(path)
   # Sort the multimap. Move items with '#' in the base name, generated for
   # analysis results via --api, first, so we prefer them over others.
-  return {short_path: sorted(paths, key=os.path.basename)
+  return {short_path: sorted(paths, key=path_tools.basename)
           for short_path, paths in imports_multimap.items()}
 
 
@@ -36,11 +36,11 @@ def _validate_imports_map(imports_map):
   errors = []
   for short_path, paths in imports_map.items():
     for path in paths:
-      if not os.path.exists(path):
+      if not path_tools.exists(path):
         errors.append((short_path, path))
   if errors:
     log.error("Invalid imports_map entries (checking from root dir: %s)",
-              os.path.abspath("."))
+              path_tools.abspath("."))
     for short_path, path in errors:
       log.error("  file does not exist: %r (mapped from %r)", path, short_path)
   return errors
@@ -68,7 +68,7 @@ def build_imports_map(options_info_path, open_function=open):
     if len(paths) > 1:
       log.warning("Multiple files for %r => %r ignoring %r",
                   short_path, paths[0], paths[1:])
-  imports_map = {short_path: os.path.abspath(paths[0])
+  imports_map = {short_path: path_tools.abspath(paths[0])
                  for short_path, paths in imports_multimap.items()}
 
   errors = _validate_imports_map(imports_multimap)
@@ -89,7 +89,7 @@ def build_imports_map(options_info_path, open_function=open):
     # If we have a mapping file foo/bar/quux.py', then the pieces are ["foo",
     # "bar", "quux"] and we want to add foo/__init__.py and foo/bar/__init__.py
     for i in range(1, len(short_path_pieces)):
-      intermediate_dir_init = os.path.join(*(
+      intermediate_dir_init = path_tools.join(*(
           short_path_pieces[:i] + ["__init__"]))
       if (intermediate_dir_init not in imports_map and
           intermediate_dir_init not in dir_paths):

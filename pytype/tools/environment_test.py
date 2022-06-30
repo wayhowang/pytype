@@ -20,7 +20,7 @@ class TestComputePythonPath(unittest.TestCase):
       d.create_file('__init__.py')
       f = d.create_file('foo.py')
       self.assertSequenceEqual(environment.compute_pythonpath([f]),
-                               [os.path.dirname(d.path)])
+                               [path_tools.dirname(d.path)])
 
   def test_subpackage(self):
     with file_utils.Tempdir() as d:
@@ -28,7 +28,7 @@ class TestComputePythonPath(unittest.TestCase):
       d.create_file('d/__init__.py')
       f = d.create_file('d/foo.py')
       self.assertSequenceEqual(environment.compute_pythonpath([f]),
-                               [os.path.dirname(d.path)])
+                               [path_tools.dirname(d.path)])
 
   def test_multiple_paths(self):
     with file_utils.Tempdir() as d:
@@ -36,16 +36,16 @@ class TestComputePythonPath(unittest.TestCase):
       f2 = d.create_file('d2/foo.py')
       self.assertSequenceEqual(
           environment.compute_pythonpath([f1, f2]),
-          [os.path.join(d.path, 'd2'), os.path.join(d.path, 'd1')])
+          [path_tools.join(d.path, 'd2'), path_tools.join(d.path, 'd1')])
 
   def test_sort(self):
     with file_utils.Tempdir() as d:
       f1 = d.create_file('d1/foo.py')
       f2 = d.create_file('d1/d2/foo.py')
       f3 = d.create_file('d1/d2/d3/foo.py')
-      path = [os.path.join(d.path, 'd1', 'd2', 'd3'),
-              os.path.join(d.path, 'd1', 'd2'),
-              os.path.join(d.path, 'd1')]
+      path = [path_tools.join(d.path, 'd1', 'd2', 'd3'),
+              path_tools.join(d.path, 'd1', 'd2'),
+              path_tools.join(d.path, 'd1')]
       self.assertSequenceEqual(
           environment.compute_pythonpath([f1, f2, f3]), path)
       self.assertSequenceEqual(

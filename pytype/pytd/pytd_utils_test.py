@@ -269,7 +269,7 @@ class TestUtils(parser_test_base.ParserTest):
   def test_diff_same_pickle(self):
     ast = pytd.TypeDeclUnit("foo", (), (), (), (), ())
     with file_utils.Tempdir() as d:
-      filename = os.path.join(d.path, "foo.pickled")
+      filename = path_tools.join(d.path, "foo.pickled")
       serialize_ast.StoreAst(ast, filename)
       with open(filename, "rb") as fi:
         data = fi.read()
@@ -279,7 +279,7 @@ class TestUtils(parser_test_base.ParserTest):
   def test_diff_pickle_name(self):
     ast = pytd.TypeDeclUnit("foo", (), (), (), (), ())
     with file_utils.Tempdir() as d:
-      filename = os.path.join(d.path, "foo.pickled")
+      filename = path_tools.join(d.path, "foo.pickled")
       serialize_ast.StoreAst(ast, filename)
       with open(filename, "rb") as fi:
         data = fi.read()
@@ -293,7 +293,7 @@ class TestUtils(parser_test_base.ParserTest):
     with file_utils.Tempdir() as d:
       data = []
       for ast in (ast1, ast2):
-        filename = os.path.join(d.path, "foo.pickled")
+        filename = path_tools.join(d.path, "foo.pickled")
         serialize_ast.StoreAst(ast, filename)
         with open(filename, "rb") as fi:
           data.append(fi.read())
@@ -304,7 +304,7 @@ class TestUtils(parser_test_base.ParserTest):
   def test_diff_pickle_length(self):
     ast = pytd.TypeDeclUnit("foo", (), (), (), (), ())
     with file_utils.Tempdir() as d:
-      filename = os.path.join(d.path, "foo.pickled")
+      filename = path_tools.join(d.path, "foo.pickled")
       serialize_ast.StoreAst(ast, filename)
       with open(filename, "rb") as fi:
         data = fi.read()
@@ -405,7 +405,7 @@ class TestDataFiles(parser_test_base.ParserTest):
     """Verify 'import sys' for python3."""
     subdir = "builtins"
     _, import_contents = pytd_utils.GetPredefinedFile(subdir, "builtins")
-    with open(os.path.join(os.path.dirname(file_utils.__file__), "stubs",
+    with open(path_tools.join(path_tools.dirname(file_utils.__file__), "stubs",
                            subdir, "builtins.pytd")) as fi:
       file_contents = fi.read()
     self.assertMultiLineEqual(import_contents, file_contents)

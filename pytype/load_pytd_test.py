@@ -189,7 +189,7 @@ class ImportPathsTest(_LoaderTest):
       AnyPath = PathLike[str]
     """) as loader:
       loader.finish_and_verify_ast(
-          loader.load_file("target", os.path.join(
+          loader.load_file("target", path_tools.join(
               loader.options.pythonpath[0], "target.pyi")))
 
   def test_relative(self):
@@ -646,7 +646,7 @@ class PickledPyiLoaderTest(test_base.UnitTest):
     """)
 
   def _get_path(self, tempdir, filename):
-    return os.path.join(tempdir.path, filename)
+    return path_tools.join(tempdir.path, filename)
 
   def _load_ast(self, tempdir, module):
     loader = load_pytd.Loader(config.Options.create(

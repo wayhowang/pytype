@@ -101,7 +101,7 @@ class BuiltinLoader:
       filename = module_name
     else:
       mod = self._parse_predefined(builtin_dir, module_name, as_package=True)
-      filename = os.path.join(module_name, "__init__.pyi")
+      filename = path_tools.join(module_name, "__init__.pyi")
     return filename, mod
 
 # pylint: enable=invalid-name

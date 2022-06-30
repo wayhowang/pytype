@@ -6,10 +6,10 @@ import shutil
 import subprocess
 import sys
 
-PYTYPE_SRC_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT_DIR = os.path.join(PYTYPE_SRC_ROOT, "out")
-CMAKE_LOG = os.path.join(OUT_DIR, "cmake.log")
-NINJA_LOG = os.path.join(OUT_DIR, "ninja.log")
+PYTYPE_SRC_ROOT = path_tools.dirname(path_tools.dirname(path_tools.abspath(__file__)))
+OUT_DIR = path_tools.join(PYTYPE_SRC_ROOT, "out")
+CMAKE_LOG = path_tools.join(OUT_DIR, "cmake.log")
+NINJA_LOG = path_tools.join(OUT_DIR, "ninja.log")
 
 NINJA_FAILURE_PREFIX = "FAILED: "
 FAILURE_MSG_PREFIX = ">>> FAIL"
@@ -28,13 +28,13 @@ def current_py_version():
 
 def build_script(base_name):
   """Return the full path to a script in the 'build_scripts' directory."""
-  return os.path.join(PYTYPE_SRC_ROOT, "build_scripts", base_name)
+  return path_tools.join(PYTYPE_SRC_ROOT, "build_scripts", base_name)
 
 
 class BuildConfig:
   """Utility class to create and manage the build config cache."""
 
-  BUILD_CONFIG_CACHE = os.path.join(OUT_DIR, ".build_config.json")
+  BUILD_CONFIG_CACHE = path_tools.join(OUT_DIR, ".build_config.json")
 
   def __init__(self, **kwargs):
     self.py_version = kwargs.get("py_version")
@@ -62,7 +62,7 @@ class BuildConfig:
 
   @classmethod
   def read_cached_config(cls):
-    if os.path.exists(cls.BUILD_CONFIG_CACHE):
+    if path_tools.exists(cls.BUILD_CONFIG_CACHE):
       with open(cls.BUILD_CONFIG_CACHE) as f:
         return BuildConfig(**json.load(f))
     else:
@@ -73,8 +73,8 @@ class BuildConfig:
 def clean_dir(dir_path, exclude_file_list=None):
   exclude_list = exclude_file_list or []
   for item in os.listdir(dir_path):
-    path = os.path.join(dir_path, item)
-    if os.path.isdir(path):
+    path = path_tools.join(dir_path, item)
+    if path_tools.isdir(path):
       shutil.rmtree(path)
     elif item not in exclude_list:
       os.remove(path)
@@ -139,7 +139,7 @@ def run_cmake(force_clean=False, log_output=False, debug_build=False):
     print("Running with build config same as cached build config; "
           "not cleaning 'out' directory.\n")
 
-  if os.path.exists(os.path.join(OUT_DIR, "build.ninja")):
+  if path_tools.exists(path_tools.join(OUT_DIR, "build.ninja")):
     # Run CMake if it was not already run. If CMake was already run, it
     # generates a build.ninja file in the "out" directory.
     msg = "Running CMake skipped as the build.ninja file is present ...\n"

@@ -42,7 +42,7 @@ class TestBase(unittest.TestCase):
     self.assertEqual(conf.pythonpath, [
         path,
         '/foo/bar',
-        os.path.join(path, 'baz/quux')
+        path_tools.join(path, 'baz/quux')
     ])
     self.assertEqual(conf.python_version, '3.7')
     self.assertEqual(conf.disable, 'import-error,module-attr')
@@ -135,14 +135,14 @@ class TestGenerateConfig(unittest.TestCase):
   def test_generate(self):
     conf = config.FileConfig()
     with file_utils.Tempdir() as d:
-      f = os.path.join(d.path, 'sample.cfg')
+      f = path_tools.join(d.path, 'sample.cfg')
       config.generate_sample_config_or_die(f, self.parser.pytype_single_args)
       # Test that we've generated a valid config and spot-check a pytype-all
       # and a pytype-single argument.
       conf.read_from_file(f)
       with file_utils.cd(d.path):
         expected_pythonpath = [
-            os.path.realpath(p)
+            path_tools.realpath(p)
             for p in config.ITEMS['pythonpath'].sample.split(os.pathsep)]
       expected_protocols = config._PYTYPE_SINGLE_ITEMS['protocols'].sample
       self.assertEqual(conf.pythonpath, expected_pythonpath)
@@ -152,7 +152,7 @@ class TestGenerateConfig(unittest.TestCase):
 
   def test_read(self):
     with file_utils.Tempdir() as d:
-      f = os.path.join(d.path, 'test.cfg')
+      f = path_tools.join(d.path, 'test.cfg')
       config.generate_sample_config_or_die(f, self.parser.pytype_single_args)
       conf = config.read_config_file_or_die(f)
     # Smoke test for postprocessing and spot-check of a result.
@@ -162,7 +162,7 @@ class TestGenerateConfig(unittest.TestCase):
   def test_keep_going_file_default(self):
     conf = config.FileConfig()
     with file_utils.Tempdir() as d:
-      f = os.path.join(d.path, 'sample.cfg')
+      f = path_tools.join(d.path, 'sample.cfg')
       config.generate_sample_config_or_die(f, self.parser.pytype_single_args)
       conf.read_from_file(f)
     self.assertIsInstance(conf.keep_going, bool)

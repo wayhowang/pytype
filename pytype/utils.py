@@ -18,7 +18,7 @@ import weakref
 # to test upcoming versions.
 def _validate_python_version_upper_bound():
   for frame_summary in traceback.extract_stack():
-    head, tail = os.path.split(frame_summary.filename)
+    head, tail = path_tools.split(frame_summary.filename)
     if "/pytype/" in head + "/" and (
         tail.startswith("test_") or tail.endswith("_test.py")):
       return False

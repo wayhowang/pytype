@@ -13,7 +13,7 @@ import os as os_alias
 import os.path
 #- @os ref ModuleOs
 #- @path ref ModuleOsPath
-os.path.exists
+path_tools.exists
 
 #- @path ref/imports ModuleOsPath
 from os import path

@@ -395,7 +395,7 @@ class BuiltinTests(test_base.BaseTest):
     ty = self.Infer("""
       import os
       class Foo:
-        bar = os.path.join('hello', 'world')
+        bar = path_tools.join('hello', 'world')
     """)
     ty.Lookup("Foo")  # smoke test
 

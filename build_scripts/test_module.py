@@ -172,10 +172,10 @@ def run_tests_in_class(class_object, options, reporter):
 def run_tests_in_module(options, reporter):
   """Run test methods in a module and return the number of failing methods.."""
   reporter.report_module()
-  mod_abs_path = os.path.join(
+  mod_abs_path = path_tools.join(
       options.pytype_path,
-      options.fq_mod_name.replace(".", os.path.sep) + ".py")
-  if not os.path.exists(mod_abs_path):
+      options.fq_mod_name.replace(".", path_tools.sep) + ".py")
+  if not path_tools.exists(mod_abs_path):
     msg = f"ERROR: Module not found: {options.fq_mod_name}."
     if options.output_file:
       options.output_file.write(msg + "\n")

@@ -24,19 +24,19 @@ def parse_args():
 
 
 def copy_file(src_dir, dst_dir, filename):
-  dst_file = os.path.join(dst_dir, filename)
-  dst_parent = os.path.dirname(dst_file)
-  if not os.path.exists(dst_parent):
+  dst_file = path_tools.join(dst_dir, filename)
+  dst_parent = path_tools.dirname(dst_file)
+  if not path_tools.exists(dst_parent):
     # Create the intermediate directories if they do not exist
     os.makedirs(dst_parent)
-  shutil.copy(os.path.join(src_dir, filename), dst_file)
+  shutil.copy(path_tools.join(src_dir, filename), dst_file)
 
 
 def main():
   args = parse_args()
-  if not os.path.exists(args.src_dir):
+  if not path_tools.exists(args.src_dir):
     sys.exit(f"Source directory '{args.src_dir}' does not exist.")
-  if not os.path.exists(args.dst_dir):
+  if not path_tools.exists(args.dst_dir):
     sys.exit(f"Destination directory '{args.dst_dir}' does not exist")
   for filename in args.file_list:
     copy_file(args.src_dir, args.dst_dir, filename)

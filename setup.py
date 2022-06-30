@@ -12,13 +12,13 @@ import sys
 from setuptools import setup
 
 # Path to directory containing setup.py
-here = os.path.abspath(os.path.dirname(__file__))
+here = path_tools.abspath(path_tools.dirname(__file__))
 
 # Get the pybind11 setup helpers
 #
 # This is appended, so if already available in site-packages, that is used
 # instead
-sys.path.append(os.path.join(here, "pybind11"))
+sys.path.append(path_tools.join(here, "pybind11"))
 
 from pybind11.setup_helpers import Pybind11Extension  # pylint: disable=g-import-not-at-top,wrong-import-position
 
@@ -49,9 +49,9 @@ def get_typegraph_ext():
 
 def copy_typeshed():
   """Windows install workaround: copy typeshed if the symlink doesn't work."""
-  internal_typeshed = os.path.join(here, 'pytype', 'typeshed')
-  if not os.path.exists(os.path.join(internal_typeshed, 'stdlib')):
-    if os.path.exists(internal_typeshed):
+  internal_typeshed = path_tools.join(here, 'pytype', 'typeshed')
+  if not path_tools.exists(path_tools.join(internal_typeshed, 'stdlib')):
+    if path_tools.exists(internal_typeshed):
       # If it is a symlink, remove it
       try:
         os.remove(internal_typeshed)
@@ -59,7 +59,7 @@ def copy_typeshed():
         # This might be a directory that has not got a complete typeshed
         # installation in it; delete and copy it over again.
         shutil.rmtree(internal_typeshed)
-    shutil.copytree(os.path.join(here, 'typeshed'), internal_typeshed)
+    shutil.copytree(path_tools.join(here, 'typeshed'), internal_typeshed)
 
 
 def scan_package_data(path, pattern, check):
@@ -68,16 +68,16 @@ def scan_package_data(path, pattern, check):
   # We start off in the setup.py directory, but package_data is relative to
   # the pytype/ directory.
   package_dir = 'pytype'
-  path = os.path.join(*path)
-  full_path = os.path.join(package_dir, path)
+  path = path_tools.join(*path)
+  full_path = path_tools.join(package_dir, path)
   result = []
   for subdir, _, _ in os.walk(full_path):
-    full_pattern = os.path.join(subdir, pattern)
+    full_pattern = path_tools.join(subdir, pattern)
     if glob.glob(full_pattern):
       # Once we know that it matches files, we store the pattern itself,
       # stripping off the prepended pytype/
-      result.append(os.path.relpath(full_pattern, package_dir))
-  assert os.path.join(path, *check) in result
+      result.append(path_tools.relpath(full_pattern, package_dir))
+  assert path_tools.join(path, *check) in result
   return result
 
 
@@ -97,7 +97,7 @@ def get_data_files():
 
 def get_long_description():
   # Read the long-description from a file.
-  with open(os.path.join(here, 'README.md'), encoding='utf-8') as f:
+  with open(path_tools.join(here, 'README.md'), encoding='utf-8') as f:
     desc = '\n' + f.read()
   # Fix relative links to the pytype docs.
   return re.sub(

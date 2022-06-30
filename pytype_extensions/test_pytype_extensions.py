@@ -9,7 +9,7 @@ from pytype.tests import test_base
 
 
 def InitContents():
-  with open(os.path.join(os.path.dirname(__file__), '__init__.py')) as f:
+  with open(path_tools.join(path_tools.dirname(__file__), '__init__.py')) as f:
     lines = f.readlines()
   return ''.join(lines)
 

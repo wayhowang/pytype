@@ -62,7 +62,7 @@ class TestInferModule(unittest.TestCase):
   def test_not_found(self):
     mod = module_utils.infer_module(expand("bar/baz.py"), ["foo"])
     expected_target = expand("bar/baz.py")
-    expected_name, _ = os.path.splitext(expected_target.replace(os.sep, "."))
+    expected_name, _ = path_tools.splitext(expected_target.replace(os.sep, "."))
     self.assert_module_equal(mod, "", expected_target, expected_name)
 
 

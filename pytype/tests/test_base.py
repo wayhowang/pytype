@@ -461,7 +461,7 @@ class BaseTest(unittest.TestCase):
           else:
             path, contents = dep
             opts = {}
-          base, ext = os.path.splitext(path)
+          base, ext = path_tools.splitext(path)
           if ext == ".pyi":
             filepath = d.create_file(path, contents)
           elif ext == ".py":

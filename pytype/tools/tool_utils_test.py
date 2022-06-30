@@ -31,9 +31,9 @@ class TestMakeDirsOrDie(unittest.TestCase):
 
   def test_make(self):
     with file_utils.Tempdir() as d:
-      subdir = os.path.join(d.path, 'some/path')
+      subdir = path_tools.join(d.path, 'some/path')
       tool_utils.makedirs_or_die(subdir, '')
-      self.assertTrue(os.path.isdir(subdir))
+      self.assertTrue(path_tools.isdir(subdir))
 
   def test_die(self):
     with self.assertRaises(SystemExit):

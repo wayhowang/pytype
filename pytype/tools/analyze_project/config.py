@@ -200,7 +200,7 @@ class FileConfig:
     cfg = config.ConfigSection.create_from_file(filepath, 'pytype')
     if not cfg:
       return None
-    converters = make_converters(cwd=os.path.dirname(filepath))
+    converters = make_converters(cwd=path_tools.dirname(filepath))
     for k, v in cfg.items():
       if k in converters:
         v = converters[k](v)
@@ -211,7 +211,7 @@ class FileConfig:
 def generate_sample_config_or_die(filename, pytype_single_args):
   """Write out a sample config file."""
 
-  if os.path.exists(filename):
+  if path_tools.exists(filename):
     logging.critical('Not overwriting existing file: %s', filename)
     sys.exit(1)
 

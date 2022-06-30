@@ -88,7 +88,7 @@ class Module:
       # imports_map_loader adds os.devnull entries for __init__.py files in
       # intermediate directories.
       return True
-    return self.filename and os.path.basename(self.filename) in self._INIT_NAMES
+    return self.filename and path_tools.basename(self.filename) in self._INIT_NAMES
 
 
 class BadDependencyError(Exception):
@@ -207,11 +207,11 @@ class _ModuleMap:
       m.ast = loaded_ast.ast
       if loaded_ast.is_package:
         init_file = f"__init__.{pytd_utils.PICKLE_EXT}"
-        if m.filename and os.path.basename(m.filename) != init_file:
-          base, _ = os.path.splitext(m.filename)
-          m.filename = os.path.join(base, init_file)
+        if m.filename and path_tools.basename(m.filename) != init_file:
+          base, _ = path_tools.splitext(m.filename)
+          m.filename = path_tools.join(base, init_file)
         else:
-          m.filename = self.PREFIX + os.path.join(m.module_name, init_file)
+          m.filename = self.PREFIX + path_tools.join(m.module_name, init_file)
       m.pickle = None
     module_map = self.get_module_map()
     for loaded_ast in newly_loaded_asts:
@@ -246,20 +246,20 @@ class _PathFinder:
     """
     module_name_split = module_name.split(".")
     for searchdir in self.options.pythonpath:
-      path = os.path.join(searchdir, *module_name_split)
+      path = path_tools.join(searchdir, *module_name_split)
       # See if this is a directory with a "__init__.py" defined.
       # (These also get automatically created in imports_map_loader.py)
-      init_path = os.path.join(path, "__init__")
+      init_path = path_tools.join(path, "__init__")
       full_path = self.get_pyi_path(init_path)
       if full_path is not None:
         log.debug("Found module %r with path %r", module_name, init_path)
         return full_path, True
-      elif self.options.imports_map is None and os.path.isdir(path):
+      elif self.options.imports_map is None and path_tools.isdir(path):
         # We allow directories to not have an __init__ file.
         # The module's empty, but you can still load submodules.
         log.debug("Created empty module %r with path %r",
                   module_name, init_path)
-        full_path = os.path.join(path, "__init__.pyi")
+        full_path = path_tools.join(path, "__init__.pyi")
         return full_path, False
       else:  # Not a directory
         full_path = self.get_pyi_path(path)
@@ -278,9 +278,9 @@ class _PathFinder:
     else:
       full_path = path + ".pyi"
 
-    # We have /dev/null entries in the import_map - os.path.isfile() returns
+    # We have /dev/null entries in the import_map - path_tools.isfile() returns
     # False for those. However, we *do* want to load them. Hence exists / isdir.
-    if os.path.exists(full_path) and not os.path.isdir(full_path):
+    if path_tools.exists(full_path) and not path_tools.isdir(full_path):
       return full_path
     else:
       return None

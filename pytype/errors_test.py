@@ -290,7 +290,7 @@ class ErrorLogBaseTest(unittest.TestCase):
 
 
 class ErrorDocTest(unittest.TestCase):
-  ERROR_FILE_PATH = os.path.join(os.path.dirname(errors.__file__),
+  ERROR_FILE_PATH = path_tools.join(path_tools.dirname(errors.__file__),
                                  "../docs/errors.md")
 
   def _check_and_get_documented_errors(self):
