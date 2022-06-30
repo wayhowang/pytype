@@ -13,7 +13,7 @@ If mode is "TEST", then the release will be pushed to testpypi. If the mode is
 "RELEASE", then the release is pushed to pypi.
 """
 
-from pytype.tools import path as path_tools
+
 import argparse
 import os
 import shutil
@@ -56,8 +56,8 @@ def verify_no_pytype_installation_exists():
 
 
 def verify_pypirc_exists():
-  pypirc_path = path_tools.join(path_tools.expanduser("~"), ".pypirc")
-  if not path_tools.exists(pypirc_path):
+  pypirc_path = os.path.join(os.path.expanduser("~"), ".pypirc")
+  if not os.path.exists(pypirc_path):
     sys.exit("ERROR: '.pypirc' file not found.")
 
 
@@ -75,7 +75,7 @@ def upload_package(package_path, test=False):
   twine_cmd = ["twine", "upload"]
   if test:
     twine_cmd.extend(["--repository", "testpypi"])
-  twine_cmd.append(path_tools.join(package_path, "*"))
+  twine_cmd.append(os.path.join(package_path, "*"))
   print(f"Uploading: {twine_cmd}")
   returncode, stdout = build_utils.run_cmd(twine_cmd)
   if returncode != 0:
@@ -93,14 +93,14 @@ class DistributionPackage:
       raise ReleaseError(f"Running {sdist_cmd} failed:\n{stdout}")
     # The sdist command creates the distribution package in a directory
     # named "dist"
-    self.dist_path = path_tools.join(build_utils.PYTYPE_SRC_ROOT, "dist")
+    self.dist_path = os.path.join(build_utils.PYTYPE_SRC_ROOT, "dist")
     return self.dist_path
 
   def __exit__(self, exc_type, exc_val, exc_tb):
     print("Deleting the distribution directory ...\n")
     shutil.rmtree(self.dist_path)
     print("Deleting the metadata directory ...\n")
-    shutil.rmtree(path_tools.join(build_utils.PYTYPE_SRC_ROOT, "pytype.egg-info"))
+    shutil.rmtree(os.path.join(build_utils.PYTYPE_SRC_ROOT, "pytype.egg-info"))
     return False
 
 

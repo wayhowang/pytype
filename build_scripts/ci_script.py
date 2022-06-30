@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """A simple script to run CI build steps."""
 
-from pytype.tools import path as path_tools
+
 import collections
 import os
 import sys
@@ -52,7 +52,7 @@ def main():
             command=["python", "-m",
                      "pytype_extensions.test_pytype_extensions"])
   s5 = STEP(name="Type Check",
-            command=[path_tools.join("out", "bin", "pytype"), "-j", "auto"])
+            command=[os.path.join("out", "bin", "pytype"), "-j", "auto"])
   _run_steps([s1, s2, s3, s4, s5])
   print("\n*** All build steps completed successfully! ***\n")
 
