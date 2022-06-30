@@ -58,30 +58,30 @@ class FileUtilsTest(unittest.TestCase):
   def test_cd(self):
     with file_utils.Tempdir() as d:
       d.create_directory("foo")
-      d1 = os.getcwd()
+      d1 = path_tools.getcwd()
       with file_utils.cd(d.path):
         self.assertTrue(path_tools.isdir("foo"))
-      d2 = os.getcwd()
+      d2 = path_tools.getcwd()
       self.assertEqual(d1, d2)
 
   def test_cd_noop(self):
-    d = os.getcwd()
+    d = path_tools.getcwd()
     with file_utils.cd(None):
-      self.assertEqual(os.getcwd(), d)
+      self.assertEqual(path_tools.getcwd(), d)
     with file_utils.cd(""):
-      self.assertEqual(os.getcwd(), d)
+      self.assertEqual(path_tools.getcwd(), d)
 
 
 class TestPathExpansion(unittest.TestCase):
   """Tests for file_utils.expand_path(s?)."""
 
   def test_expand_one_path(self):
-    full_path = path_tools.join(os.getcwd(), "foo.py")
+    full_path = path_tools.join(path_tools.getcwd(), "foo.py")
     self.assertEqual(file_utils.expand_path("foo.py"), full_path)
 
   def test_expand_two_paths(self):
-    full_path1 = path_tools.join(os.getcwd(), "foo.py")
-    full_path2 = path_tools.join(os.getcwd(), "bar.py")
+    full_path1 = path_tools.join(path_tools.getcwd(), "foo.py")
+    full_path2 = path_tools.join(path_tools.getcwd(), "bar.py")
     self.assertEqual(file_utils.expand_paths(["foo.py", "bar.py"]),
                      [full_path1, full_path2])
 
@@ -181,15 +181,15 @@ class TestExpandPythonpath(unittest.TestCase):
 
   def test_expand(self):
     self.assertEqual(file_utils.expand_pythonpath(f"a/b{os.pathsep}c/d"),
-                     [path_tools.join(os.getcwd(), "a", "b"),
-                      path_tools.join(os.getcwd(), "c", "d")])
+                     [path_tools.join(path_tools.getcwd(), "a", "b"),
+                      path_tools.join(path_tools.getcwd(), "c", "d")])
 
   def test_expand_empty(self):
     self.assertEqual(file_utils.expand_pythonpath(""), [])
 
   def test_expand_current_directory(self):
     self.assertEqual(file_utils.expand_pythonpath(f"{os.pathsep}a"),
-                     [os.getcwd(), path_tools.join(os.getcwd(), "a")])
+                     [path_tools.getcwd(), path_tools.join(path_tools.getcwd(), "a")])
 
   def test_expand_with_cwd(self):
     with file_utils.Tempdir() as d:

@@ -99,9 +99,9 @@ class TestParser(unittest.TestCase):
 
   def test_output(self):
     self.assertEqual(self.parser.parse_args(
-        ['-o', 'pyi']).output, path_tools.join(os.getcwd(), 'pyi'))
+        ['-o', 'pyi']).output, path_tools.join(path_tools.getcwd(), 'pyi'))
     self.assertEqual(self.parser.parse_args(
-        ['--output', 'pyi']).output, path_tools.join(os.getcwd(), 'pyi'))
+        ['--output', 'pyi']).output, path_tools.join(path_tools.getcwd(), 'pyi'))
 
   def test_no_cache(self):
     self.assertFalse(self.parser.parse_args([]).no_cache)
@@ -111,7 +111,7 @@ class TestParser(unittest.TestCase):
       self.parser.parse_args(['--output', 'pyi', '--no-cache'])
 
   def test_pythonpath(self):
-    d = os.getcwd()
+    d = path_tools.getcwd()
     self.assertSequenceEqual(self.parser.parse_args(
         ['-P', ':foo']).pythonpath, [d, path_tools.join(d, 'foo')])
     self.assertSequenceEqual(self.parser.parse_args(
@@ -135,7 +135,7 @@ class TestParser(unittest.TestCase):
   def test_config_file(self):
     conf = self.parser.config_from_defaults()
     # Spot check a pytype-all arg.
-    self.assertEqual(conf.output, path_tools.join(os.getcwd(), '.pytype'))
+    self.assertEqual(conf.output, path_tools.join(path_tools.getcwd(), '.pytype'))
     # And a pytype-single arg.
     self.assertIsInstance(conf.disable, list)
     self.assertFalse(conf.disable)

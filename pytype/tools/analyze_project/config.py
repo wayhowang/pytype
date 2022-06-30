@@ -264,7 +264,7 @@ def read_config_file_or_die(filepath):
       sys.exit(1)
   else:
     # Try reading from setup.cfg.
-    filepath = config.find_config_file(os.getcwd())
+    filepath = config.find_config_file(path_tools.getcwd())
     if filepath and ret.read_from_file(filepath):
       logging.info('Reading config from: %s', filepath)
     else:

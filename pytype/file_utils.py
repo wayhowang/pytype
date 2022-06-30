@@ -17,9 +17,9 @@ def recursive_glob(path):
     return [path]
   elif "**" not in path:
     # Recursive glob isn't needed.
-    return glob.glob(path)
+    return path_tools.glob(path)
   else:
-    return glob.glob(path, recursive=True)
+    return path_tools.glob(path, recursive=True)
 
 
 def replace_extension(filename, new_extension):
@@ -98,7 +98,7 @@ def cd(path):
   if not path:
     yield
     return
-  curdir = os.getcwd()
+  curdir = path_tools.getcwd()
   os.chdir(path)
   try:
     yield
