@@ -315,7 +315,7 @@ def get_name_error_details(
 def _module_name(frame):
   if frame.f_code.co_filename:
     return ".".join(re.sub(
-        r"\.py$", "", frame.f_code.co_filename).split(os.sep)[-2:])
+        r"\.py$", "", frame.f_code.co_filename).split(path_tools.sep)[-2:])
   else:
     return ""
 

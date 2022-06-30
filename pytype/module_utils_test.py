@@ -41,7 +41,7 @@ class TestInferModule(unittest.TestCase):
   """Test module_utils.infer_module."""
 
   def assert_module_equal(self, module, path, target, name, kind="Local"):
-    self.assertEqual(module.path.rstrip(os.sep), path.rstrip(os.sep))
+    self.assertEqual(module.path.rstrip(path_tools.sep), path.rstrip(path_tools.sep))
     self.assertEqual(module.target, target)
     self.assertEqual(module.name, name)
     self.assertEqual(module.kind, kind)
@@ -64,7 +64,7 @@ class TestInferModule(unittest.TestCase):
   def test_not_found(self):
     mod = module_utils.infer_module(expand("bar/baz.py"), ["foo"])
     expected_target = expand("bar/baz.py")
-    expected_name, _ = path_tools.splitext(expected_target.replace(os.sep, "."))
+    expected_name, _ = path_tools.splitext(expected_target.replace(path_tools.sep, "."))
     self.assert_module_equal(mod, "", expected_target, expected_name)
 
 

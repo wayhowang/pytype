@@ -81,13 +81,13 @@ def build_imports_map(options_info_path, open_function=open):
 
   # Add the potential directory nodes for adding "__init__", because some build
   # systems automatically create __init__.py in empty directories. These are
-  # added with the path name appended with "/" (os.sep), mapping to the empty
+  # added with the path name appended with "/" (path_tools.sep), mapping to the empty
   # file.  See also load_pytd._import_file which also checks for an empty
   # directory and acts as if an empty __init__.py is there.
   dir_paths = {}
   for short_path, path in sorted(imports_map.items()):
     dir_paths[short_path] = path
-    short_path_pieces = short_path.split(os.sep)
+    short_path_pieces = short_path.split(path_tools.sep)
     # If we have a mapping file foo/bar/quux.py', then the pieces are ["foo",
     # "bar", "quux"] and we want to add foo/__init__.py and foo/bar/__init__.py
     for i in range(1, len(short_path_pieces)):

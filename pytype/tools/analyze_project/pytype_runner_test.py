@@ -314,7 +314,7 @@ class TestYieldSortedModules(TestBase):
   """Tests for PytypeRunner.yield_sorted_modules()."""
 
   def normalize(self, d):
-    return file_utils.expand_path(d).rstrip(os.sep) + os.sep
+    return file_utils.expand_path(d).rstrip(path_tools.sep) + path_tools.sep
 
   def assert_sorted_modules_equal(self, mod_gen, expected_list):
     for (expected_mod,

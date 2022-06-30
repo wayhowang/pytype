@@ -46,8 +46,8 @@ def infer_module(filename, pythonpath):
   """
   # We want '' in our lookup path, but we don't want it for prefix tests.
   for path in filter(bool, pythonpath):
-    if not path.endswith(os.sep):
-      path += os.sep
+    if not path.endswith(path_tools.sep):
+      path += path_tools.sep
     if filename.startswith(path):
       filename = filename[len(path):]
       break

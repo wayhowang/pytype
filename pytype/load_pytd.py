@@ -699,7 +699,7 @@ class Loader:
     if existing:
       return existing
 
-    assert os.sep not in module_name, (os.sep, module_name)
+    assert path_tools.sep not in module_name, (path_tools.sep, module_name)
     log.debug("Trying to import %r", module_name)
     # Builtin modules (but not standard library modules!) take precedence
     # over modules in PYTHONPATH.
