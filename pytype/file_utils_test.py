@@ -198,11 +198,11 @@ class TestExpandPythonpath(unittest.TestCase):
           [path_tools.join(d.path, "a", "b"), path_tools.join(d.path, "c", "d")])
 
   def test_strip_whitespace(self):
-    self.assertEqual(file_utils.expand_pythonpath("""
-      a/b:
+   self.assertEqual(file_utils.expand_pythonpath("""
+      a/b{}
       c/d
-    """), [path_tools.join(os.getcwd(), "a", "b"),
-           path_tools.join(os.getcwd(), "c", "d")])
+    """.format(os.pathsep)), [path_tools.join(path_tools.getcwd(), "a", "b"),
+           path_tools.join(path_tools.getcwd(), "c", "d")])
 
 
 class TestExpandGlobpaths(unittest.TestCase):
