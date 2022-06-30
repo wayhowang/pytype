@@ -1,6 +1,6 @@
 """Tests for pytype_runner.py."""
 
-from pytype.tools import path as path_tools
+from pytype.tools import path_tools
 import collections
 import dataclasses
 import os

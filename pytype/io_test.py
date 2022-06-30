@@ -1,6 +1,6 @@
 """Tests for io.py."""
 
-from pytype.tools import path as path_tools
+from pytype.tools import path_tools
 import contextlib
 import io as builtins_io
 import os

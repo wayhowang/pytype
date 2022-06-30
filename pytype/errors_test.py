@@ -1,6 +1,6 @@
 """Test errors.py."""
 
-from pytype.tools import path as path_tools
+from pytype.tools import path_tools
 import collections
 import csv
 import io

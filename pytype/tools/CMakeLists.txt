@@ -9,7 +9,7 @@ py_library(
     .environment
     .runner
     .tool_utils
-    ".path"
+    .path_tools
     .tempfile
 )
 
@@ -28,6 +28,8 @@ py_library(
     config
   SRCS
     config.py
+  DEPS
+    .path_tools
 )
 
 py_library(
@@ -37,6 +39,7 @@ py_library(
     environment.py
   DEPS
     .runner
+    .path_tools
     pytype.pytd.pytd
 )
 
@@ -108,6 +111,7 @@ py_test(
     tool_utils_test.py
   DEPS
     .tools
+    .path_tools
     pytype.utils
 )
 

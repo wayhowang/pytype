@@ -1,6 +1,6 @@
 """Utilities for parsing pytd files for builtins."""
 
-from pytype.tools import path as path_tools
+from pytype.tools import path_tools
 import os
 
 from pytype.pyi import parser

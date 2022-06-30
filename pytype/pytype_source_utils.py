@@ -4,7 +4,7 @@
 # This file should be kept under pytype/ so that __file__.dirname is the
 # top-level pytype directory.
 
-from pytype.tools import path as path_tools
+from pytype.tools import path_tools
 import os
 import re
 

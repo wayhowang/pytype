@@ -1,6 +1,6 @@
 """Utilities for dealing with project configuration."""
 
-from pytype.tools import path as path_tools
+from pytype.tools import path_tools
 import configparser
 import os
 

@@ -10,7 +10,7 @@ locally or within a larger repository.
 # We use a mix of camel case and snake case for method names:
 # pylint: disable=invalid-name
 
-from pytype.tools import path as path_tools
+from pytype.tools import path_tools
 import collections
 import difflib
 import gzip

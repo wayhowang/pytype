@@ -1,6 +1,6 @@
 """Tests for parse_args.py."""
 
-from pytype.tools import path as path_tools
+from pytype.tools import path_tools
 import os
 import sys
 import types

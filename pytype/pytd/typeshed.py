@@ -1,6 +1,6 @@
 """Utilities for parsing typeshed files."""
 
-from pytype.tools import path as path_tools
+from pytype.tools import path_tools
 import collections
 import os
 import re

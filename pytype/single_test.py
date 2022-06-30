@@ -1,6 +1,6 @@
 """Integration test for pytype."""
 
-from pytype.tools import path as path_tools
+from pytype.tools import path_tools
 import csv
 import hashlib
 import os
