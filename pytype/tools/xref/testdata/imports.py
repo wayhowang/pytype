@@ -1,7 +1,6 @@
 # pylint: skip-file
 
 #- @#0os ref/imports ModuleOs
-from pytype.tools import path_tools
 import os
 #- @#0os ref/imports ModuleOs
 #- @os_alias defines/binding OsAlias
@@ -14,7 +13,7 @@ import os as os_alias
 import os.path
 #- @os ref ModuleOs
 #- @path ref ModuleOsPath
-path_tools.exists
+os.path.exists
 
 #- @path ref/imports ModuleOsPath
 from os import path
