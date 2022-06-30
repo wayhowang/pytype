@@ -9,12 +9,12 @@ if sys.platform == 'win32':
     # pylint: disable=W0622
     def __init__(self, mode='w+b', buffering=-1, encoding=None,
             newline=None, suffix=None, prefix=None,
-            dir=None, delete=True, *, errors=None):
+            dir=None, delete=True):
       # pylint: disable=R1732
       self._tempfile = tempfile.NamedTemporaryFile(
         mode=mode, buffering=buffering, encoding=encoding,
         newline=newline, suffix=suffix, prefix=prefix, dir=dir,
-        delete=False, errors=errors)
+        delete=False)
       self._delete = delete
 
     def __enter__(self):
