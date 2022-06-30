@@ -195,7 +195,8 @@ class NamedTupleBuilder(NamedTupleBuilderBase):
     # Subclasses of NamedTupleBuilder need a different pyval.
     if not pyval:
       pyval = collections_ast.Lookup("collections.namedtuple")
-    self = super().make(name, ctx, "collections", pyval=pyval)  # pytype: disable=wrong-arg-types
+    # pytype: disable=wrong-arg-types
+    self = super().make(name, ctx, "collections", pyval=pyval)
     self.collections_ast = collections_ast
     return self
 
@@ -480,7 +481,8 @@ class NamedTupleClassBuilder(abstract.PyTDClass):
 
     # Since we might have classvars or methods referring to the class itself,
     # we need to insert the just-constructed class into the convert cache.
-    ctx.convert._convert_cache[("constant", pytd_cls, type(pytd_cls))] = cls  # pylint: disable=protected-access
+    ctx.convert._convert_cache[("constant", pytd_cls, type(
+      pytd_cls))] = cls  # pylint: disable=protected-access
 
     # Set the official class name.
     cls.update_official_name(cls.name)

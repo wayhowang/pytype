@@ -5,7 +5,6 @@ import io
 import os
 import re
 import subprocess
-import tempfile
 from typing import List
 
 from pytype import pytype_source_utils
@@ -66,7 +65,8 @@ def compile_src_string_to_pyc_string(
   else:
     tempfile_options = {"mode": "w", "suffix": ".py", "delete": False}
     tempfile_options.update({"encoding": "utf-8"})
-    fi = compatible_tempfile.NamedTemporaryFile(**tempfile_options)  # pylint: disable=consider-using-with
+    fi = compatible_tempfile.NamedTemporaryFile(
+      **tempfile_options)  # pylint: disable=consider-using-with
     try:
       fi.write(src)
       fi.close()

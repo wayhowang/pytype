@@ -1,9 +1,7 @@
 """Tests for io.py."""
 
-from pytype.tools import path_tools
 import contextlib
 import io as builtins_io
-import os
 import sys
 import textwrap
 import traceback
@@ -12,6 +10,7 @@ from pytype import config
 from pytype import io
 from pytype.pytd import pytd
 from pytype.tools import tempfile as compatible_tempfile
+from pytype.tools import path_tools
 
 import unittest
 

@@ -2,7 +2,6 @@
 
 from pytype.tools import path_tools
 import logging
-import os
 import subprocess
 import sys
 from typing import Iterable, Sequence, Tuple
@@ -40,8 +39,9 @@ def _get_executable(binary, module=None):
     custom_bin = path_tools.join('out', 'bin', 'pytype')
     if sys.argv[0] == custom_bin:
       # The Travis type-check step uses custom binaries in pytype/out/bin/.
-      return [path_tools.join(path_tools.abspath(path_tools.dirname(custom_bin)),
-                           'pytype-single')]
+      return [path_tools.join(
+        path_tools.abspath(path_tools.dirname(custom_bin)),
+        'pytype-single')]
   if sys.executable is not None:
     return [sys.executable, '-m', module or binary]
   else:
@@ -205,7 +205,8 @@ class PytypeRunner:
 
   def write_imports(self, module_name, imports_map, suffix):
     """Write a .imports file."""
-    output = path_tools.join(self.imports_dir, module_name + '.imports' + suffix)
+    output = path_tools.join(
+      self.imports_dir, module_name + '.imports' + suffix)
     with open(output, 'w') as f:
       for item in imports_map.items():
         f.write('%s %s\n' % item)

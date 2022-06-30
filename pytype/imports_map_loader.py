@@ -80,7 +80,7 @@ def build_imports_map(options_info_path, open_function=open):
 
   # Add the potential directory nodes for adding "__init__", because some build
   # systems automatically create __init__.py in empty directories. These are
-  # added with the path name appended with "/" (path_tools.sep), mapping to the empty
+  # added with the path name appended with "/", mapping to the empty
   # file.  See also load_pytd._import_file which also checks for an empty
   # directory and acts as if an empty __init__.py is there.
   dir_paths = {}

@@ -1,12 +1,9 @@
 """Utilities for parsing pytd files for builtins."""
 
-from pytype.tools import path_tools
-import os
-
 from pytype.pyi import parser
 from pytype.pytd import pytd_utils
 from pytype.pytd import visitors
-
+from pytype.tools import path_tools
 
 # TODO(rechen): It would be nice to get rid of GetBuiltinsAndTyping, and let the
 # loader call BuiltinsAndTyping.load directly, but the cache currently prevents

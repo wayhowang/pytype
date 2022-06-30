@@ -1,15 +1,14 @@
 """Tests for pytype_runner.py."""
 
-from pytype.tools import path_tools
 import collections
 import dataclasses
-import os
 
 from pytype import config as pytype_config
 from pytype import file_utils
 from pytype import module_utils
 from pytype.tools.analyze_project import parse_args
 from pytype.tools.analyze_project import pytype_runner
+from pytype.tools import path_tools
 import unittest
 
 
@@ -545,7 +544,8 @@ class TestNinjaBody(TestBase):
         module='foo'))
     short_bar_path, bar_path = imports_info.split(' ')
     self.assertEqual(short_bar_path, 'bar')
-    self.assertEqual(bar_path, path_tools.join(runner.imports_dir, 'default.pyi'))
+    self.assertEqual(bar_path,
+      path_tools.join(runner.imports_dir, 'default.pyi'))
 
   def test_cycle(self):
     src = Module('', 'foo.py', 'foo')
@@ -636,7 +636,8 @@ class TestImports(TestBase):
       runner = make_runner([], [], self.conf)
       self.assertTrue(runner.make_imports_dir())
       output = runner.write_default_pyi()
-      self.assertEqual(output, path_tools.join(runner.imports_dir, 'default.pyi'))
+      self.assertEqual(output, path_tools.join(runner.imports_dir,
+       'default.pyi'))
       with open(output) as f:
         self.assertEqual(f.read(), pytype_runner.DEFAULT_PYI)
 
@@ -646,7 +647,8 @@ class TestImports(TestBase):
       runner = make_runner([], [], self.conf)
       self.assertTrue(runner.make_imports_dir())
       output = runner.write_imports('mod', {'a': 'b'}, '')
-      self.assertEqual(path_tools.join(runner.imports_dir, 'mod.imports'), output)
+      self.assertEqual(path_tools.join(runner.imports_dir, 'mod.imports'),
+        output)
       with open(output) as f:
         self.assertEqual(f.read(), 'a b\n')
 

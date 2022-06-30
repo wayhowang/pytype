@@ -1,10 +1,8 @@
 """Test errors.py."""
 
-from pytype.tools import path_tools
 import collections
 import csv
 import io
-import os
 import textwrap
 from unittest import mock
 
@@ -12,6 +10,7 @@ from pytype import errors
 from pytype import file_utils
 from pytype import state as frame_state
 from pytype.tests import test_utils
+from pytype.tools import path_tools
 
 import unittest
 

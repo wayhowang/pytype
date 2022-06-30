@@ -2,7 +2,6 @@
 
 from pytype.tools import path_tools
 import logging
-import os
 import sys
 from typing import List
 
@@ -21,7 +20,8 @@ def check_python_version(exe: List[str], required):
   """Check if exe is a python executable with the required version."""
   try:
     # python --version outputs to stderr for earlier versions
-    _, out, err = runner.BinaryRun(exe + ["--version"]).communicate()  # pylint: disable=unpacking-non-sequence
+    _, out, err = runner.BinaryRun(
+      exe + ["--version"]).communicate()  # pylint: disable=unpacking-non-sequence
     version = out or err
     version = version.decode("utf-8")
     if version.startswith(f"Python {required}"):

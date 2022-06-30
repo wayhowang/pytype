@@ -208,7 +208,8 @@ def _LookupClassReferences(serializable_ast, module_map, self_name):
   class_lookup = visitors.LookupExternalTypes(module_map, self_name=self_name)
   raw_ast = serializable_ast.ast
 
-  decorators = {d.type.name for c in raw_ast.classes for d in c.decorators}  # pylint: disable=g-complex-comprehension
+  decorators = {
+    d.type.name for c in raw_ast.classes for d in c.decorators}  # pylint: disable=g-complex-comprehension
 
   for node in (serializable_ast.class_type_nodes or ()):
     try:

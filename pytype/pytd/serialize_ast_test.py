@@ -1,5 +1,3 @@
-from pytype.tools import path_tools
-import os
 import pickle
 
 from pytype import config
@@ -9,6 +7,7 @@ from pytype.pytd import pytd_utils
 from pytype.pytd import serialize_ast
 from pytype.pytd import visitors
 from pytype.tests import test_base
+from pytype.tools import path_tools
 
 import unittest
 

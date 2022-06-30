@@ -485,7 +485,8 @@ class PyTDFunction(_function_base.Function):
     # Update our parent's AST too, if we have a parent.
     # 'parent' is set by PyTDClass._convert_member
     if hasattr(self, "parent"):
-      self.parent._member_map[self.name] = self.generate_ast()  # pylint: disable=protected-access
+      self.parent._member_map[self.name] = self.generate_ast(
+      )  # pylint: disable=protected-access
 
   def generate_ast(self):
     return pytd.Function(

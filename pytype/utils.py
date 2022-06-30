@@ -1,10 +1,8 @@
 """Generic functions."""
 
-from pytype.tools import path_tools
 import collections
 import contextlib
 import itertools
-import os.path
 import re
 import subprocess
 import sys
@@ -13,6 +11,7 @@ import traceback
 from typing import Iterable, List
 import weakref
 
+from pytype.tools import path_tools
 
 # We disable the check that keeps pytype from running on not-yet-supported
 # versions when we detect that a pytype test is executing, in order to be able

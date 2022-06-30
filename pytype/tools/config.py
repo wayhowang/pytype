@@ -2,7 +2,6 @@
 
 from pytype.tools import path_tools
 import configparser
-import os
 
 
 def find_config_file(path, filename='setup.cfg'):

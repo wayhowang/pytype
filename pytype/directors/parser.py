@@ -236,7 +236,8 @@ class _ParseVisitor(visitor.BaseVisitor):
       self._process_structured_comments(LineRange.from_node(decorator))
     # The line range for this definition starts at the beginning of the last
     # decorator and ends at the definition's name.
-    self.decorators.append(LineRange(decorator.lineno, node.lineno))  # pylint: disable=undefined-loop-variable
+    self.decorators.append(LineRange(
+      decorator.lineno, node.lineno))  # pylint: disable=undefined-loop-variable
 
   def _visit_def(self, node):
     self._visit_decorators(node)

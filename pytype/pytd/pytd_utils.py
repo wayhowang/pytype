@@ -10,13 +10,11 @@ locally or within a larger repository.
 # We use a mix of camel case and snake case for method names:
 # pylint: disable=invalid-name
 
-from pytype.tools import path_tools
 import collections
 import difflib
 import gzip
 import io
 import itertools
-import os
 import pickle
 import pickletools
 import re
@@ -28,6 +26,7 @@ from pytype.pytd import printer
 from pytype.pytd import pytd
 from pytype.pytd import pytd_visitors
 from pytype.pytd.parse import parser_constants
+from pytype.tools import path_tools
 
 
 _PICKLE_PROTOCOL = pickle.HIGHEST_PROTOCOL
@@ -408,7 +407,8 @@ def SavePickle(data, filename=None, compress=False, open_function=open):
         with gzip.GzipFile(filename="", mode="wb",
                            fileobj=fi, mtime=1.0) as zfi:
           # TODO(b/173150871): Remove disable once typeshed bug is fixed.
-          pickle.dump(data, zfi, _PICKLE_PROTOCOL)  # pytype: disable=wrong-arg-types
+          # pytype: disable=wrong-arg-types
+          pickle.dump(data, zfi, _PICKLE_PROTOCOL)
     elif filename is not None:
       with open_function(filename, "wb") as fi:
         pickle.dump(data, fi, _PICKLE_PROTOCOL)

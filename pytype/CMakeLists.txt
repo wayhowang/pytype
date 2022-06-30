@@ -451,6 +451,7 @@ py_library(
     pytype.pyc.pyc
     pytype.pytd.pytd
     pytype.typegraph.cfg
+    pytype.tools.path_tools
 )
 
 py_test(

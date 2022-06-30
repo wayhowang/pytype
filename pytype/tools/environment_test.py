@@ -1,7 +1,6 @@
 """Tests for environment.py."""
 
 from pytype.tools import path_tools
-import os
 
 from pytype import file_utils
 from pytype.tools import environment

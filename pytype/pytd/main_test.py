@@ -1,13 +1,11 @@
 """Tests for pytd_tool (pytd/main.py)."""
 
-from pytype.tools import path_tools
-import os
 import sys
 import textwrap
 from pytype import file_utils
 from pytype.pytd import main as pytd_tool
 import unittest
-
+from pytype.tools import path_tools
 
 class TestPytdTool(unittest.TestCase):
   """Test pytd/main.py."""

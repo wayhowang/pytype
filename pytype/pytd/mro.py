@@ -30,7 +30,8 @@ def MergeSequences(seqs):
       cand = seq[0]
       if getattr(cand, "SINGLETON", False):
         # Special class. Cycles are allowed. Emit and remove duplicates.
-        seqs = [[s for s in seq if s != cand] for seq in seqs]  # pylint: disable=g-complex-comprehension
+        seqs = [[s for s in seq if s != cand]
+          for seq in seqs]  # pylint: disable=g-complex-comprehension
         break
       if any(s for s in seqs if cand in s[1:] and s is not seq):
         cand = None  # reject candidate

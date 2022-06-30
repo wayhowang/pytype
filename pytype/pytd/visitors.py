@@ -1359,7 +1359,8 @@ class ExpandSignatures(Visitor):
     """
 
     # flatten return value(s) from VisitSignature
-    signatures = tuple(ex for s in f.signatures for ex in ExpandSignature(s))  # pylint: disable=g-complex-comprehension
+    signatures = tuple(ex for s in f.signatures for ex in ExpandSignature(
+      s))  # pylint: disable=g-complex-comprehension
     return f.Replace(signatures=signatures)
 
 

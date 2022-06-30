@@ -89,7 +89,8 @@ class Module:
       # imports_map_loader adds os.devnull entries for __init__.py files in
       # intermediate directories.
       return True
-    return self.filename and path_tools.basename(self.filename) in self._INIT_NAMES
+    return self.filename and (
+      path_tools.basename(self.filename) in self._INIT_NAMES)
 
 
 class BadDependencyError(Exception):

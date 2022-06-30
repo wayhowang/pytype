@@ -226,7 +226,8 @@ class Typeshed:
       if path_rel in self.missing:
         return (path_tools.join(self._root, "nonexistent", path_rel + ".pyi"),
                 builtin_stubs.DEFAULT_SRC)
-      for path in [path_tools.join(path_rel, "__init__.pyi"), path_rel + ".pyi"]:
+      for path in [path_tools.join(path_rel, "__init__.pyi"),
+                   path_rel + ".pyi"]:
         try:
           name, src = self._load_file(path)
           return name, src
@@ -314,7 +315,8 @@ class Typeshed:
 
   def read_blacklist(self):
     """Read the typeshed blacklist."""
-    _, text = self._load_file(path_tools.join("tests", "pytype_exclude_list.txt"))
+    _, text = self._load_file(path_tools.join(
+      "tests", "pytype_exclude_list.txt"))
     for line in text.splitlines():
       if "#" in line:
         line = line[:line.index("#")]
@@ -325,7 +327,8 @@ class Typeshed:
   def blacklisted_modules(self):
     """Return the blacklist, as a list of module names. E.g. ["x", "y.z"]."""
     for path in self.read_blacklist():
-      parts = path.split(path_tools.sep)  # E.g. ["stdlib", "html", "parser.pyi"]
+      # E.g. ["stdlib", "html", "parser.pyi"]
+      parts = path.split(path_tools.sep)
       if parts[0] == "stdlib":
         filename = path_tools.sep.join(parts[1:])
       else:

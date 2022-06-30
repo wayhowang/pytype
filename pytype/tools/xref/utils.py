@@ -1,8 +1,6 @@
 """Utilities for xref."""
 
 from pytype.tools import path_tools
-import os
-
 from pytype import module_utils
 
 

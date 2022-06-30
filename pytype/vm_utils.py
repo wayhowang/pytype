@@ -5,7 +5,6 @@ import collections.abc
 import dataclasses
 import itertools
 import logging
-import os
 import re
 import reprlib
 from typing import Optional, Sequence, Union
@@ -23,6 +22,7 @@ from pytype.pyc import opcodes
 from pytype.pytd import mro
 from pytype.pytd import pytd
 from pytype.pytd import slots
+from pytype.tools import path_tools
 from pytype.typegraph import cfg
 
 log = logging.getLogger(__name__)

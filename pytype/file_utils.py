@@ -1,14 +1,13 @@
 """File and path utilities."""
 
-from pytype.tools import path_tools
 import contextlib
 import errno
-import glob
 import os
 import shutil
 import tempfile
 import textwrap
 
+from pytype.tools import path_tools
 
 def recursive_glob(path):
   """Call recursive glob iff ** is in the pattern."""

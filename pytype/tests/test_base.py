@@ -3,7 +3,6 @@
 from pytype.tools import path_tools
 import contextlib
 import logging
-import os.path
 import sys
 import textwrap
 from typing import Tuple

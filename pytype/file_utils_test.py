@@ -39,7 +39,8 @@ class FileUtilsTest(unittest.TestCase):
       self.assertTrue(path_tools.isdir(path_tools.join(d.path, "d1")))
       self.assertTrue(path_tools.isdir(path_tools.join(d.path, "d1", "d2")))
       self.assertTrue(path_tools.isdir(filename5))
-      self.assertEqual(filename4, path_tools.join(d.path, "d1", "d2", "qqsv.txt"))
+      self.assertEqual(filename4, path_tools.join(d.path, "d1", "d2",
+                                                  "qqsv.txt"))
       for filename, contents in [(filename1, ""),
                                  (filename2, "data2"),  # dedented
                                  (filename3, "data3"),
@@ -189,16 +190,18 @@ class TestExpandPythonpath(unittest.TestCase):
 
   def test_expand_current_directory(self):
     self.assertEqual(file_utils.expand_pythonpath(f"{os.pathsep}a"),
-                     [path_tools.getcwd(), path_tools.join(path_tools.getcwd(), "a")])
+                     [path_tools.getcwd(),
+                      path_tools.join(path_tools.getcwd(), "a")])
 
   def test_expand_with_cwd(self):
     with file_utils.Tempdir() as d:
       self.assertEqual(
           file_utils.expand_pythonpath(f"a/b{os.pathsep}c/d", cwd=d.path),
-          [path_tools.join(d.path, "a", "b"), path_tools.join(d.path, "c", "d")])
+          [path_tools.join(d.path, "a", "b"),
+           path_tools.join(d.path, "c", "d")])
 
   def test_strip_whitespace(self):
-   self.assertEqual(file_utils.expand_pythonpath("""
+    self.assertEqual(file_utils.expand_pythonpath("""
       a/b{}
       c/d
     """.format(os.pathsep)), [path_tools.join(path_tools.getcwd(), "a", "b"),

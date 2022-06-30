@@ -6,11 +6,15 @@ import os
 # Windows Cannot open a temp file twice without delete=False"""
 if sys.platform == 'win32':
   class NamedTemporaryFile:
+    # pylint: disable=W0622
     def __init__(self, mode='w+b', buffering=-1, encoding=None,
             newline=None, suffix=None, prefix=None,
             dir=None, delete=True, *, errors=None):
-      self._tempfile = tempfile.NamedTemporaryFile(mode=mode, buffering=buffering, encoding=encoding, 
-        newline=newline, suffix=suffix, prefix=prefix, dir=dir, delete=False, errors=errors)
+      # pylint: disable=R1732
+      self._tempfile = tempfile.NamedTemporaryFile(
+        mode=mode, buffering=buffering, encoding=encoding,
+        newline=newline, suffix=suffix, prefix=prefix, dir=dir,
+        delete=False, errors=errors)
       self._delete = delete
 
     def __enter__(self):

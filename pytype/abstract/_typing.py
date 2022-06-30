@@ -667,7 +667,8 @@ class LateAnnotation:
     if self.resolved:
       return self._type.to_variable(node)
     else:
-      return _base.BaseValue.to_variable(self, node)  # pytype: disable=wrong-arg-types
+      # pytype: disable=wrong-arg-types
+      return _base.BaseValue.to_variable(self, node)
 
   def instantiate(self, node, container=None):
     """Instantiate the pointed-to class, or record a placeholder instance."""
@@ -680,7 +681,8 @@ class LateAnnotation:
 
   def get_special_attribute(self, node, name, valself):
     if name == "__getitem__" and not self.resolved:
-      container = _base.BaseValue.to_annotation_container(self)  # pytype: disable=wrong-arg-types
+      container = _base.BaseValue.to_annotation_container(
+        self)  # pytype: disable=wrong-arg-types
       return container.get_special_attribute(node, name, valself)
     return self._type.get_special_attribute(node, name, valself)
 
