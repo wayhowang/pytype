@@ -9,6 +9,8 @@ py_library(
     .environment
     .runner
     .tool_utils
+    ".path"
+    .tempfile
 )
 
 py_library(
@@ -52,6 +54,20 @@ py_library(
     tool_utils.py
   DEPS
     pytype.utils
+)
+
+py_library(
+  NAME
+    "path"
+  SRCS
+    "path.py"
+)
+
+py_library(
+  NAME
+    tempfile
+  SRCS
+    tempfile.py
 )
 
 py_test(
