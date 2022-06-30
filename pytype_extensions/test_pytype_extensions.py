@@ -1,5 +1,6 @@
 """Tests for pytype_extensions."""
 
+from pytype.tools import path as path_tools
 import os
 
 from pytype import errors

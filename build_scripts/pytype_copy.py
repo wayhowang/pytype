@@ -5,6 +5,8 @@ Usage:
   copy.py -s <SOURCE_DIRECTORY> -d <DESTINATION_DIRECTORY> file1 [file2 ...]
 """
 
+from pytype.tools import path as path_tools
+from pytype.tools import path as path_tools
 import argparse
 import os
 import shutil

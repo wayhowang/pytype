@@ -1,5 +1,7 @@
 """Tests for load_pytd.py."""
 
+from pytype.tools import path as path_tools
+from pytype.tools import path as path_tools
 import contextlib
 import dataclasses
 import io

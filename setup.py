@@ -3,6 +3,7 @@
 
 # pylint: disable=bad-indentation
 
+from pytype.tools import path as path_tools
 import glob
 import os
 import re

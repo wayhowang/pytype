@@ -1,5 +1,7 @@
 """Common methods for tests of analyze.py."""
 
+from pytype.tools import path as path_tools
+from pytype.tools import path as path_tools
 import contextlib
 import logging
 import os.path

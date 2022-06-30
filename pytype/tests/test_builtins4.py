@@ -1,5 +1,7 @@
 """Tests of builtins (in stubs/builtins/{version}/__builtins__.pytd)."""
 
+from pytype.tools import path as path_tools
+from pytype.tools import path as path_tools
 from pytype import file_utils
 from pytype.tests import test_base
 from pytype.tests import test_utils

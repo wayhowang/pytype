@@ -3,6 +3,8 @@
 File 1/3. Split into parts to enable better test parallelism.
 """
 
+from pytype.tools import path as path_tools
+from pytype.tools import path as path_tools
 from pytype.tests import test_base
 
 

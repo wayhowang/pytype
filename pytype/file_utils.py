@@ -1,5 +1,7 @@
 """File and path utilities."""
 
+from pytype.tools import path as path_tools
+from pytype.tools import path as path_tools
 import contextlib
 import errno
 import glob

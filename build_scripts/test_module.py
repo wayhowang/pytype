@@ -25,6 +25,8 @@ Specifying the -S option silences all printing to stdout. It overrides other
 print flags (-p and -s).
 """
 
+from pytype.tools import path as path_tools
+from pytype.tools import path as path_tools
 import argparse
 import os
 import sys

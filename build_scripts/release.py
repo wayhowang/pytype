@@ -13,6 +13,8 @@ If mode is "TEST", then the release will be pushed to testpypi. If the mode is
 "RELEASE", then the release is pushed to pypi.
 """
 
+from pytype.tools import path as path_tools
+from pytype.tools import path as path_tools
 import argparse
 import os
 import shutil
