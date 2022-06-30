@@ -1,5 +1,3 @@
-from genericpath import exists
-from posixpath import expanduser
 import sys
 import functools
 import os.path
