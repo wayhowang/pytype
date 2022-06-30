@@ -6,25 +6,26 @@ import glob as glob_module
 
 
 def _replace_return_path_seperator(func):
-    if sys.platform == "win32":
-        @functools.wraps(func)
-        def wrapped(*args, **kwargs):
-            return func(*args, **kwargs).replace(os.path.sep, '/')
-        return wrapped
-    else:
-        return wrapped
+  if sys.platform == "win32":
+    @functools.wraps(func)
+    def wrapped(*args, **kwargs):
+      return func(*args, **kwargs).replace(os.path.sep, '/')
+    return wrapped
+  else:
+    return func
+
 
 if sys.platform == 'win32':
-    def splitext(path):
-        filename, ext = os.path.splitext(path)
-        return filename.replace(os.path.sep, '/'), ext
+  def splitext(path):
+    filename, ext = os.path.splitext(path)
+    return filename.replace(os.path.sep, '/'), ext
 
-    def glob(*args, **kwargs):
-        path_list = glob_module.glob(*args, **kwargs)
-        return list(map(lambda x: x.replace(os.path.sep, '/'), path_list))
+  def glob(*args, **kwargs):
+    path_list = glob_module.glob(*args, **kwargs)
+    return list(map(lambda x: x.replace(os.path.sep, '/'), path_list))
 else:
-    splitext = os.path.splitext
-    glob = glob_module.glob
+  splitext = os.path.splitext
+  glob = glob_module.glob
 
 
 # return path.replace(os.path.sep, '/') in win32.
