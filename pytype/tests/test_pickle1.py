@@ -49,6 +49,7 @@ class PickleTest(test_base.BaseTest):
       """)
 
   def test_copy_class_into_output(self):
+    self._SkipOnWindows()
     pickled_foo = self.Infer("""
       import asyncore
       a = 42

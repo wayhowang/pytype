@@ -553,6 +553,7 @@ class ImportTest(test_base.BaseTest):
     """)
 
   def test_imported_method_as_class_attribute(self):
+    self._SkipOnWindows()
     ty = self.Infer("""
       import os
       class Foo:

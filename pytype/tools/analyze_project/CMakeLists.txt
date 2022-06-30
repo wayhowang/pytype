@@ -98,4 +98,5 @@ toplevel_py_binary(
     .analyze_project
     pytype.libvm
     pytype.tools.tools
+    pytype.tools.tempfile
 )

@@ -131,7 +131,7 @@ class IOTest(unittest.TestCase):
 
   def test_write_pickle(self):
     ast = pytd.TypeDeclUnit(None, (), (), (), (), ())
-    options = config.Options.create(output="/dev/null")
+    options = config.Options.create(output="/dev/null" if sys.platform != "win32" else "NUL")
     io.write_pickle(ast, options)  # just make sure we don't crash
 
 

@@ -2,6 +2,7 @@
 
 import sys
 import types
+import os
 
 from pytype import file_utils
 from pytype.tools.analyze_project import config
@@ -115,9 +116,9 @@ class TestParser(unittest.TestCase):
   def test_pythonpath(self):
     d = path_tools.getcwd()
     self.assertSequenceEqual(self.parser.parse_args(
-        ['-P', ':foo']).pythonpath, [d, path_tools.join(d, 'foo')])
+        ['-P', f'{os.pathsep}foo']).pythonpath, [d, path_tools.join(d, 'foo')])
     self.assertSequenceEqual(self.parser.parse_args(
-        ['--pythonpath', ':foo']).pythonpath, [d, path_tools.join(d, 'foo')])
+        ['--pythonpath', f'{os.pathsep}foo']).pythonpath, [d, path_tools.join(d, 'foo')])
 
   def test_keep_going(self):
     self.assertTrue(self.parser.parse_args(['-k']).keep_going)

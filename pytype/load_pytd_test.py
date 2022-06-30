@@ -1,11 +1,11 @@
 """Tests for load_pytd.py."""
 
-from pytype.tools import path_tools
 import contextlib
 import dataclasses
 import io
 import os
 import textwrap
+import sys
 
 from pytype import config
 from pytype import file_utils
@@ -16,6 +16,7 @@ from pytype.pytd import pytd_utils
 from pytype.pytd import serialize_ast
 from pytype.pytd import visitors
 from pytype.tests import test_base
+from pytype.tools import path_tools
 
 import unittest
 
@@ -83,7 +84,7 @@ class ImportPathsTest(_LoaderTest):
         d2.create_file("dir2/module2.pyi", "def foo2() -> str: ...")
         loader = load_pytd.Loader(config.Options.create(
             module_name="base", python_version=self.python_version,
-            pythonpath=f"{d1.path}:{d2.path}"))
+            pythonpath=f"{d1.path}{os.pathsep}{d2.path}"))
         module1 = loader.import_name("dir1.module1")
         module2 = loader.import_name("dir2.module2")
         self.assertTrue(module1.Lookup("dir1.module1.foo1"))
@@ -118,12 +119,12 @@ class ImportPathsTest(_LoaderTest):
   def test_no_init_imports_map(self):
     with file_utils.Tempdir() as d:
       d.create_directory("baz")
-      os.chdir(d.path)
-      loader = load_pytd.Loader(config.Options.create(
-          module_name="base", python_version=self.python_version,
-          pythonpath=""))
-      loader.options.tweak(imports_map={})
-      self.assertFalse(loader.import_name("baz"))
+      with file_utils.cd(d.path):
+        loader = load_pytd.Loader(config.Options.create(
+            module_name="base", python_version=self.python_version,
+            pythonpath=""))
+        loader.options.tweak(imports_map={})
+        self.assertFalse(loader.import_name("baz"))
 
   def test_stdlib(self):
     loader = load_pytd.Loader(config.Options.create(
@@ -255,12 +256,13 @@ class ImportPathsTest(_LoaderTest):
       foo_path = d.create_file("foo.pyi", "class X: ...")
       bar_path = d.create_file("bar.pyi", "X = ...  # type: another.foo.X")
       # Map the same pyi file under two module paths.
+      null_device = "/dev/null" if sys.platform != "win32" else "NUL"
       imports_map = {
           "foo": foo_path,
           "another/foo": foo_path,
           "bar": bar_path,
-          "empty1": "/dev/null",
-          "empty2": "/dev/null",
+          "empty1": null_device,
+          "empty2": null_device,
       }
       loader = load_pytd.Loader(config.Options.create(
           module_name="base", python_version=self.python_version,

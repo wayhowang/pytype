@@ -1,5 +1,7 @@
 """Tests of selected stdlib functions."""
 
+import sys
+
 from pytype import file_utils
 from pytype.tests import test_base
 
@@ -68,6 +70,7 @@ class StdlibTests(test_base.BaseTest):
     """)
 
   def test_path_conf(self):
+    self._SkipOnWindows()
     self.Check("""
       import os
       max_len = os.pathconf('directory', 'name')

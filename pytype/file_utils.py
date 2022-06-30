@@ -4,10 +4,10 @@ import contextlib
 import errno
 import os
 import shutil
-import tempfile
 import textwrap
 
 from pytype.tools import path_tools
+from pytype.tools import tempfile as compatible_tempfile
 
 def recursive_glob(path):
   """Call recursive glob iff ** is in the pattern."""
@@ -42,7 +42,7 @@ class Tempdir:
   """Context handler for creating temporary directories."""
 
   def __enter__(self):
-    self.path = tempfile.mkdtemp()
+    self.path = compatible_tempfile.mkdtemp()
     return self
 
   def create_directory(self, filename):

@@ -11,12 +11,12 @@ from pytype.tools.analyze_project import parse_args
 import unittest
 
 
-PYTYPE_CFG = """
+PYTYPE_CFG = f"""
   [pytype]
   exclude = nonexistent.*
   pythonpath =
-    .:
-    /foo/bar:
+    .{os.pathsep}
+    {'C:' if sys.platform == 'win32' else ''}/foo/bar{os.pathsep}
     baz/quux
   python_version = 3.7
   disable =
@@ -42,7 +42,7 @@ class TestBase(unittest.TestCase):
     self.assertFalse(hasattr(conf, 'output'))
     self.assertEqual(conf.pythonpath, [
         path,
-        '/foo/bar',
+        f"{'C:' if sys.platform == 'win32' else ''}/foo/bar",
         path_tools.join(path, 'baz/quux')
     ])
     self.assertEqual(conf.python_version, '3.7')

@@ -2,7 +2,6 @@
 
 import logging
 import sys
-import tempfile
 
 import importlab.environment
 import importlab.fs
@@ -17,6 +16,7 @@ from pytype.tools.analyze_project import environment as analyze_project_env
 from pytype.tools.analyze_project import parse_args
 from pytype.tools.analyze_project import pytype_runner
 from pytype.tools import path_tools
+from pytype.tools import tempfile as compatible_tempfile
 
 def main():
   parser = parse_args.make_parser()
@@ -42,7 +42,7 @@ def main():
   conf.populate_from(args)
   conf.inputs -= conf.exclude
   if args.no_cache:
-    conf.output = tempfile.mkdtemp()
+    conf.output = compatible_tempfile.mkdtemp()
   if not conf.pythonpath:
     conf.pythonpath = environment.compute_pythonpath(conf.inputs)
   logging.info('\n  '.join(['Configuration:'] + str(conf).split('\n')))

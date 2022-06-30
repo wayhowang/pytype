@@ -24,5 +24,9 @@ if sys.platform == 'win32':
       self._tempfile.__exit__(*args, **kwargs)
       if self._delete:
         os.remove(self._tempfile.name)
+
+  def mkdtemp(*args, **kwargs):
+    return tempfile.mkdtemp(*args, **kwargs).replace(os.path.sep, '/')
 else:
   NamedTemporaryFile = tempfile.NamedTemporaryFile
+  mkdtemp = tempfile.mkdtemp

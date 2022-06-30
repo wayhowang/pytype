@@ -28,7 +28,7 @@ set_target_properties(
     pytype.typegraph.cfg
     PROPERTIES
     PREFIX ""
-    SUFFIX ".so"
+    # SUFFIX ".so"
     OUTPUT_NAME cfg
 )
 

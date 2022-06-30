@@ -234,6 +234,7 @@ py_library(
     file_utils.py
   DEPS
     pytype.tools.path_tools
+    pytype.tools.tempfile
 )
 
 py_library(

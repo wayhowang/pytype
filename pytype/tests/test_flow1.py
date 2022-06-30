@@ -328,6 +328,7 @@ class FlowTest(test_base.BaseTest):
     """)
 
   def test_loop_over_list_of_lists(self):
+    self._SkipOnWindows()
     ty = self.Infer("""
       import os
       for seq in [os.getgroups()]:  # os.getgroups() returns a List[int]

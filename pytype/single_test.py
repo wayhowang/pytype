@@ -1,13 +1,11 @@
 """Integration test for pytype."""
 
-from pytype.tools import path_tools
 import csv
 import hashlib
 import os
 import shutil
 import subprocess
 import sys
-import tempfile
 import textwrap
 
 from pytype import config
@@ -18,6 +16,8 @@ from pytype.pytd import builtin_stubs
 from pytype.pytd import pytd_utils
 from pytype.pytd import typeshed
 from pytype.tests import test_base
+from pytype.tools import tempfile as compatible_tempfile
+from pytype.tools import path_tools
 
 import unittest
 
@@ -36,7 +36,7 @@ class PytypeTest(test_base.UnitTest):
   def setUp(self):
     super().setUp()
     self._reset_pytype_args()
-    self.tmp_dir = tempfile.mkdtemp()
+    self.tmp_dir = compatible_tempfile.mkdtemp()
     self.errors_csv = path_tools.join(self.tmp_dir, "errors.csv")
 
   def tearDown(self):
@@ -276,7 +276,7 @@ class PytypeTest(test_base.UnitTest):
 
   def test_check_infer_conflict2(self):
     self.pytype_args["--check"] = self.INCLUDE
-    self.pytype_args["input.py:output.pyi"] = self.INCLUDE
+    self.pytype_args[f"input.py{os.pathsep}output.pyi"] = self.INCLUDE
     self._run_pytype(self.pytype_args)
     self.assertOutputStateMatches(stdout=False, stderr=True, returncode=True)
 
@@ -287,7 +287,7 @@ class PytypeTest(test_base.UnitTest):
     self.assertInferredPyiEquals(filename="simple.pyi")
 
   def test_multiple_output(self):
-    self.pytype_args["input.py:output1.pyi"] = self.INCLUDE
+    self.pytype_args[f"input.py{os.pathsep}output1.pyi"] = self.INCLUDE
     self.pytype_args["--output"] = "output2.pyi"
     self._run_pytype(self.pytype_args)
     self.assertOutputStateMatches(stdout=False, stderr=True, returncode=True)
@@ -300,7 +300,7 @@ class PytypeTest(test_base.UnitTest):
 
   def test_generate_builtins_pythonpath_conflict(self):
     self.pytype_args["--generate-builtins"] = "builtins.py"
-    self.pytype_args["--pythonpath"] = "foo:bar"
+    self.pytype_args["--pythonpath"] = f"foo{os.pathsep}bar"
     self._run_pytype(self.pytype_args)
     self.assertOutputStateMatches(stdout=False, stderr=True, returncode=True)
 
@@ -322,7 +322,7 @@ class PytypeTest(test_base.UnitTest):
     self.assertOutputStateMatches(stdout=False, stderr=True, returncode=True)
 
   def test_bad_input_format(self):
-    self.pytype_args["input.py:output.pyi:rumpelstiltskin"] = self.INCLUDE
+    self.pytype_args[f"input.py{os.pathsep}output.pyi{os.pathsep}rumpelstiltskin"] = self.INCLUDE
     self._run_pytype(self.pytype_args)
     self.assertOutputStateMatches(stdout=False, stderr=True, returncode=True)
 
@@ -532,8 +532,9 @@ class PytypeTest(test_base.UnitTest):
     self._reset_pytype_args()
     self._setup_checking(src)
     self.pytype_args["--precompiled-builtins"] = filename
+    null_device = "/dev/null" if sys.platform != "win32" else "NUL"
     self.pytype_args["--imports_info"] = self._make_file(f"""
-      typing /dev/null
+      typing {null_device}
       foo {pyi}
     """, extension="")
     self._run_pytype(self.pytype_args)
