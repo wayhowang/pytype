@@ -61,9 +61,9 @@ py_library(
 
 py_library(
   NAME
-    "path"
+    path_tools
   SRCS
-    "path.py"
+    path_tools.py
 )
 
 py_library(
@@ -111,7 +111,6 @@ py_test(
     tool_utils_test.py
   DEPS
     .tools
-    .path_tools
     pytype.utils
 )
 
