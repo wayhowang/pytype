@@ -31,8 +31,10 @@ def get_full_path(path):
     path for absolute paths.
     full path resolved relative to pytype/ for relative paths.
   """
-  # TODO(mdemello): Insist on relative paths here.
-  return os.path.join(pytype_source_dir(), path)
+  if os.path.isabs(path):
+    return path
+  else:
+    return os.path.join(pytype_source_dir(), path)
 
 
 def load_text_file(filename):
