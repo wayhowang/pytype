@@ -9,6 +9,7 @@ from typing import Iterable, Sequence, Tuple
 from pytype import file_utils
 from pytype import module_utils
 from pytype.tools.analyze_project import config
+from typeshed.stdlib import os
 
 
 # Generate a default pyi for builtin and system dependencies.
@@ -265,6 +266,12 @@ class PytypeRunner:
           if action != Action.GENERATE_DEFAULT:
             yield module, action, deps, Stage.SECOND_PASS
 
+  def _escape_ninja_path(self, path: str):
+    if sys.platform == 'win32':
+      return path.replace(':', '$:')
+    else:
+      return path
+
   def write_ninja_preamble(self):
     """Write out the pytype-single commands that the build will call."""
     with open(self.ninja_file, 'w') as f:
@@ -301,11 +308,11 @@ class PytypeRunner:
       f.write('build {output}: {action} {input}{deps}\n'
               '  imports = {imports}\n'
               '  module = {module}\n'.format(
-                  output=output,
+                  output=self._escape_ninja_path(output),
                   action=action,
-                  input=module.full_path,
-                  deps=' | ' + ' '.join(deps) if deps else '',
-                  imports=imports,
+                  input=self._escape_ninja_path(module.full_path),
+                  deps=' | ' + self._escape_ninja_path(' '.join(deps)) if deps else '',
+                  imports=self._escape_ninja_path(imports),
                   module=module.name))
     return output
 

@@ -2,8 +2,6 @@ import tempfile
 import sys
 import os
 
-from typeshed.stdlib.tempfile import mkdtemp
-
 
 # Windows Cannot open a temp file twice without delete=False"""
 if sys.platform == 'win32':
