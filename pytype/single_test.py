@@ -322,7 +322,8 @@ class PytypeTest(test_base.UnitTest):
     self.assertOutputStateMatches(stdout=False, stderr=True, returncode=True)
 
   def test_bad_input_format(self):
-    self.pytype_args[f"input.py{os.pathsep}output.pyi{os.pathsep}rumpelstiltskin"] = self.INCLUDE
+    self.pytype_args[f"input.py{os.pathsep}output.pyi\
+      {os.pathsep}rumpelstiltskin"] = self.INCLUDE
     self._run_pytype(self.pytype_args)
     self.assertOutputStateMatches(stdout=False, stderr=True, returncode=True)
 

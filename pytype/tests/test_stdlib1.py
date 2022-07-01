@@ -1,7 +1,5 @@
 """Tests of selected stdlib functions."""
 
-import sys
-
 from pytype import file_utils
 from pytype.tests import test_base
 
