@@ -2,6 +2,8 @@ import tempfile
 import sys
 import os
 
+from typeshed.stdlib.tempfile import mkdtemp
+
 
 # Windows Cannot open a temp file twice without delete=False"""
 if sys.platform == 'win32':
@@ -25,8 +27,9 @@ if sys.platform == 'win32':
       if self._delete:
         os.remove(self._tempfile.name)
 
-  def mkdtemp(*args, **kwargs):
-    return tempfile.mkdtemp(*args, **kwargs).replace(os.path.sep, '/')
+  # def mkdtemp(*args, **kwargs):
+  #   return tempfile.mkdtemp(*args, **kwargs).replace(os.path.sep, '/')
+  mkdtemp = tempfile.mkdtemp
 else:
   NamedTemporaryFile = tempfile.NamedTemporaryFile
   mkdtemp = tempfile.mkdtemp
