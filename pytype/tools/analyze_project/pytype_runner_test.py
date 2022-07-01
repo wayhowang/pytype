@@ -2,6 +2,7 @@
 
 import collections
 import dataclasses
+import re
 
 from pytype import config as pytype_config
 from pytype import file_utils
@@ -387,7 +388,6 @@ class TestNinjaPreamble(TestBase):
   """Tests for PytypeRunner.write_ninja_preamble."""
 
   def test_write(self):
-    self.skipTest("SHOULD NOT SKIP")
     conf = self.parser.config_from_defaults()
     with file_utils.Tempdir() as d:
       conf.output = d.path
@@ -406,7 +406,7 @@ class TestNinjaPreamble(TestBase):
         self.assertRegex(line, r'rule \w*')
       elif i % 3 == 1:
         expected = r'  command = {} .* \$in'.format(
-            ' '.join(pytype_runner.PYTYPE_SINGLE))
+            re.escape(' '.join(pytype_runner.PYTYPE_SINGLE)))
         self.assertRegex(line, expected)
       else:
         self.assertRegex(line, r'  description = \w* \$module')

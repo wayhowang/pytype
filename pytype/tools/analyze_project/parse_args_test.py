@@ -118,7 +118,7 @@ class TestParser(unittest.TestCase):
     self.assertSequenceEqual(self.parser.parse_args(
         ['-P', f'{os.pathsep}foo']).pythonpath, [d, path_tools.join(d, 'foo')])
     self.assertSequenceEqual(self.parser.parse_args(
-        ['--pythonpath', f'{os.pathsep}foo']).pythonpath, 
+        ['--pythonpath', f'{os.pathsep}foo']).pythonpath,
         [d, path_tools.join(d, 'foo')])
 
   def test_keep_going(self):

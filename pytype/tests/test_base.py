@@ -417,10 +417,6 @@ class BaseTest(unittest.TestCase):
           f"Inferencer found {len(errorlog)} errors:\n{errorlog}")
     return unit, ret.builtins
 
-  def _SkipOnWindows(self):
-    if sys.platform == 'win32':
-      self.skipTest("this test involves unsupported feature on Windows")
-
   def assertTypesMatchPytd(self, ty, pytd_src):
     """Parses pytd_src and compares with ty."""
     pytd_tree = parser.parse_string(

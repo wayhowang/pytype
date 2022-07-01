@@ -553,16 +553,15 @@ class ImportTest(test_base.BaseTest):
     """)
 
   def test_imported_method_as_class_attribute(self):
-    self._SkipOnWindows()
     ty = self.Infer("""
       import os
       class Foo:
-        killpg = os.killpg
+        kill = os.kill
     """)
     self.assertTypesMatchPytd(ty, """
       import os
       class Foo:
-        def killpg(__pgid: int, __signal: int) -> None: ...
+        def kill(__pid: int, __signal: int) -> None: ...
     """)
 
   def test_match_against_imported(self):
