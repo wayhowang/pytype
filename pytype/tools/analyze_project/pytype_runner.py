@@ -9,8 +9,6 @@ from typing import Iterable, Sequence, Tuple
 from pytype import file_utils
 from pytype import module_utils
 from pytype.tools.analyze_project import config
-from typeshed.stdlib import os
-
 
 # Generate a default pyi for builtin and system dependencies.
 DEFAULT_PYI = """
