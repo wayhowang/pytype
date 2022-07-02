@@ -8,7 +8,7 @@ import subprocess
 import sys
 import textwrap
 
-from pytype import config
+from pytype import config, file_utils
 from pytype import single
 from pytype import utils
 from pytype.pyi import parser
@@ -53,7 +53,7 @@ class PytypeTest(test_base.UnitTest):
   def _data_path(self, filename):
     if path_tools.dirname(filename) == self.tmp_dir:
       return filename
-    return path_tools.join(self.pytype_dir, "test_data/", filename)
+    return path_tools.join(self.pytype_dir, file_utils.replace_seperator("test_data/"), filename)
 
   def _tmp_path(self, filename):
     return path_tools.join(self.tmp_dir, filename)
@@ -559,7 +559,7 @@ class PytypeTest(test_base.UnitTest):
     self.pytype_args["--timeout"] = 60
     self.pytype_args["--output"] = "-"
     self.pytype_args["--quick"] = self.INCLUDE
-    self.pytype_args[self._data_path("perf/iso.py")] = self.INCLUDE
+    self.pytype_args[self._data_path(file_utils.replace_seperator("perf/iso.py"))] = self.INCLUDE
     self._run_pytype(self.pytype_args)
     self.assertOutputStateMatches(stdout=True, stderr=False, returncode=False)
 

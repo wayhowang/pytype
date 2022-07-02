@@ -25,6 +25,22 @@ if sys.platform == 'win32':
       if self._delete:
         os.remove(self._tempfile.name)
 
+    def write(self, s):
+      return self._tempfile.write(s)
+
+    def read(self, n):
+      return self._tempfile.read(n)
+
+    def seek(self, *args, **kwargs):
+      return self._tempfile.seek(*args, **kwargs)
+
+    def close(self):
+      return self._tempfile.close()
+
+    @property
+    def name(self):
+      return self._tempfile.name
+
   # def mkdtemp(*args, **kwargs):
   #   return tempfile.mkdtemp(*args, **kwargs).replace(os.path.sep, '/')
   mkdtemp = tempfile.mkdtemp

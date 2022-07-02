@@ -391,7 +391,7 @@ class TestDataFiles(parser_test_base.ParserTest):
     # smoke test, only checks that it doesn't throw, the filepath is correct,
     # and the result is a string
     path, src = pytd_utils.GetPredefinedFile(self.BUILTINS, "builtins")
-    self.assertEqual(path, "stubs/builtins/builtins.pytd")
+    self.assertEqual(path, file_utils.replace_seperator("stubs/builtins/builtins.pytd"))
     self.assertIsInstance(src, str)
 
   def test_get_predefined_file_throws(self):
@@ -413,7 +413,7 @@ class TestDataFiles(parser_test_base.ParserTest):
   def test_pytd_builtin_is_package(self):
     subdir = "builtins"
     path, _ = pytd_utils.GetPredefinedFile(subdir, "attr", as_package=True)
-    self.assertEqual(path, "stubs/builtins/attr/__init__.pytd")
+    self.assertEqual(path, file_utils.replace_seperator("stubs/builtins/attr/__init__.pytd"))
 
   def test_type_builder(self):
     t = pytd_utils.TypeBuilder()

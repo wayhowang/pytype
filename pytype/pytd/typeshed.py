@@ -265,7 +265,7 @@ class Typeshed:
   def get_pytd_paths(self):
     """Gets the paths to pytype's version-specific pytd files."""
     return [pytype_source_utils.get_full_path(d)
-            for d in ("stubs/builtins", "stubs/stdlib")]
+            for d in (f"stubs{os.path.sep}builtins", f"stubs{os.path.sep}stdlib")]
 
   def _list_modules(self, path, python_version):
     """Lists modules for _get_module_names_in_path."""
@@ -273,11 +273,11 @@ class Typeshed:
       if filename in ("VERSIONS", "METADATA.toml"):
         # stdlib/VERSIONS, stubs/{package}/METADATA.toml are metadata files.
         continue
-      parts = path.split("/")
+      parts = path.split(os.path.sep)
       if "stdlib" in parts:
         # Check supported versions for stubs directly in stdlib/.
         module_parts = module_utils.strip_init_suffix(
-            path_tools.splitext(filename)[0].split("/"))
+            path_tools.splitext(filename)[0].split(os.path.sep))
         if not self._is_module_in_typeshed(module_parts, python_version):
           continue
       yield filename
@@ -286,25 +286,25 @@ class Typeshed:
     """Gets module names from the `missing` list."""
     module_names = set()
     for f in self.missing:
-      parts = f.split("/")
+      parts = f.split(os.path.sep)
       if parts[0] == "stdlib":
         start_index = 1  # remove stdlib/ prefix
       else:
         assert parts[0] == "stubs"
         start_index = 2  # remove stubs/{package}/ prefix
-      filename = "/".join(parts[start_index:])
-      module_names.add(filename.replace("/", "."))
+      filename = os.path.sep.join(parts[start_index:])
+      module_names.add(filename.replace(os.path.sep, "."))
     return module_names
 
   def get_all_module_names(self, python_version):
     """Get the names of all modules in typeshed or bundled with pytype."""
     module_names = set()
     for abspath in self.get_typeshed_paths():
-      relpath = abspath.rpartition("typeshed/")[-1]
+      relpath = abspath.rpartition(f"typeshed{os.path.sep}")[-1]
       module_names |= _get_module_names_in_path(
           self._list_modules, relpath, python_version)
     for abspath in self.get_pytd_paths():
-      relpath = abspath.rpartition("pytype/")[-1]
+      relpath = abspath.rpartition(f"pytype{os.path.sep}")[-1]
       module_names |= _get_module_names_in_path(
           lambda path, _: pytype_source_utils.list_pytype_files(path),
           relpath, python_version)

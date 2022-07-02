@@ -4,12 +4,16 @@ import os
 import os.path
 import glob as glob_module
 
+def _replace_driver_code(path: str):
+  drive, other = os.path.splitdrive(path)
+  drive = drive.capitalize()
+  return os.path.join(drive, other)
 
 def _replace_return_path_seperator(func):
-  if sys.platform == "win32" and False:
+  if sys.platform == "win32":
     @functools.wraps(func)
     def wrapped(*args, **kwargs):
-      return func(*args, **kwargs).replace(os.path.sep, '/')
+      return _replace_driver_code(func(*args, **kwargs))
     return wrapped
   else:
     return func

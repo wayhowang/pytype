@@ -7,6 +7,7 @@ import re
 from pytype import config as pytype_config
 from pytype import file_utils
 from pytype import module_utils
+from pytype.tests import test_utils
 from pytype.tools.analyze_project import parse_args
 from pytype.tools.analyze_project import pytype_runner
 from pytype.tools import path_tools
@@ -411,7 +412,8 @@ class TestNinjaPreamble(TestBase):
       else:
         self.assertRegex(line, r'  description = \w* \$module')
 
-
+# TODO testcase for windows should be added
+@test_utils.skipOnWin32("Ninja uses `$:` to escape `:`")
 class TestNinjaBuildStatement(TestBase):
   """Tests for PytypeRunner.write_build_statement."""
 
@@ -481,6 +483,8 @@ class TestNinjaBuildStatement(TestBase):
                              path_tools.join('bar', 'baz.pyi'))
 
 
+# TODO testcase for windows should be added
+@test_utils.skipOnWin32("Ninja uses `$:` to escape `:`")
 class TestNinjaBody(TestBase):
   """Test PytypeRunner.setup_build."""
 

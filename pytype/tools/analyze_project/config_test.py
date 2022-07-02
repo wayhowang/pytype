@@ -16,8 +16,8 @@ PYTYPE_CFG = f"""
   exclude = nonexistent.*
   pythonpath =
     .{os.pathsep}
-    {'C:' if sys.platform == 'win32' else ''}/foo/bar{os.pathsep}
-    baz/quux
+    {'C:' if sys.platform == 'win32' else ''}{os.path.sep}foo{os.path.sep}bar{os.pathsep}
+    baz{os.path.sep}quux
   python_version = 3.7
   disable =
     import-error
@@ -42,8 +42,8 @@ class TestBase(unittest.TestCase):
     self.assertFalse(hasattr(conf, 'output'))
     self.assertEqual(conf.pythonpath, [
         path,
-        f"{'C:' if sys.platform == 'win32' else ''}/foo/bar",
-        path_tools.join(path, 'baz/quux')
+        f"{'C:' if sys.platform == 'win32' else ''}" + file_utils.replace_seperator("/foo/bar"),
+        path_tools.join(path, file_utils.replace_seperator('baz/quux'))
     ])
     self.assertEqual(conf.python_version, '3.7')
     self.assertEqual(conf.disable, 'import-error,module-attr')
@@ -74,7 +74,7 @@ class TestFileConfig(TestBase):
 
   def test_read_nonexistent(self):
     conf = config.FileConfig()
-    self.assertIsNone(conf.read_from_file('/does/not/exist/test.cfg'))
+    self.assertIsNone(conf.read_from_file(file_utils.replace_seperator('/does/not/exist/test.cfg')))
     self._validate_empty_contents(conf)
 
   def test_read_bad_format(self):
@@ -124,7 +124,7 @@ class TestGenerateConfig(unittest.TestCase):
 
   def test_bad_location(self):
     with self.assertRaises(SystemExit):
-      config.generate_sample_config_or_die('/does/not/exist/sample.cfg',
+      config.generate_sample_config_or_die(file_utils.replace_seperator('/does/not/exist/sample.cfg'),
                                            self.parser.pytype_single_args)
 
   def test_existing_file(self):
@@ -194,7 +194,7 @@ class TestReadConfig(TestBase):
   def test_setup_cfg_from_subdir(self):
     with file_utils.Tempdir() as d:
       d.create_file('setup.cfg', SETUP_CFG)
-      sub = d.create_directory('x/y/z')
+      sub = d.create_directory(file_utils.replace_seperator('x/y/z'))
       conf = config.Config()
       with file_utils.cd(sub):
         conf = config.read_config_file_or_die(None)

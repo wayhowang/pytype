@@ -5,6 +5,7 @@ import errno
 import os
 import shutil
 import textwrap
+import sys
 
 from pytype.tools import path_tools
 from pytype.tools import tempfile as compatible_tempfile
@@ -164,3 +165,10 @@ def expand_pythonpath(pythonpath, cwd=None):
         (path.strip() for path in pythonpath.split(os.pathsep)), cwd)
   else:
     return []
+
+def replace_seperator(path: str):
+  """ replace / with os.path.sep, replace : with os.pathsep """
+  if sys.platform == 'win32':
+    return path.replace('/', os.path.sep).replace(':', os.pathsep)
+  else:
+    return path
