@@ -120,6 +120,22 @@ def _module_to_output_path(mod):
     return mod.name[0] + mod.name[1:].replace('.', path_tools.sep)
 
 
+def escape_ninja_path(path: str):
+  """ escape `:` in absolute path on windows """
+  if sys.platform == 'win32':
+    new_path = ''
+    last_char = None
+    for ch in path:
+      if last_char != '$' and ch == ':':
+        new_path += '$:'
+      else:
+        new_path += ch
+      last_char = ch
+    return new_path
+  else:
+    return path
+
+
 def get_imports_map(deps, module_to_imports_map, module_to_output):
   """Get a short path -> full path map for the given deps."""
   imports_map = {}
@@ -264,12 +280,6 @@ class PytypeRunner:
           if action != Action.GENERATE_DEFAULT:
             yield module, action, deps, Stage.SECOND_PASS
 
-  def _escape_ninja_path(self, path: str):
-    if sys.platform == 'win32':
-      return path.replace(':', '$:')
-    else:
-      return path
-
   def write_ninja_preamble(self):
     """Write out the pytype-single commands that the build will call."""
     with open(self.ninja_file, 'w') as f:
@@ -306,11 +316,11 @@ class PytypeRunner:
       f.write('build {output}: {action} {input}{deps}\n'
               '  imports = {imports}\n'
               '  module = {module}\n'.format(
-                  output=self._escape_ninja_path(output),
+                  output=escape_ninja_path(output),
                   action=action,
-                  input=self._escape_ninja_path(module.full_path),
-                  deps=' | ' + self._escape_ninja_path(' '.join(deps)) if deps else '',
-                  imports=self._escape_ninja_path(imports),
+                  input=escape_ninja_path(module.full_path),
+                  deps=' | ' + escape_ninja_path(' '.join(deps)) if deps else '',
+                  imports=escape_ninja_path(imports),
                   module=module.name))
     return output
 

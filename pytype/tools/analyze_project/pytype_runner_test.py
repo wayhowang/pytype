@@ -3,11 +3,11 @@
 import collections
 import dataclasses
 import re
+import sys
 
 from pytype import config as pytype_config
 from pytype import file_utils
 from pytype import module_utils
-from pytype.tests import test_utils
 from pytype.tools.analyze_project import parse_args
 from pytype.tools.analyze_project import pytype_runner
 from pytype.tools import path_tools
@@ -385,6 +385,18 @@ class TestYieldSortedModules(TestBase):
         [(mod, Action.GENERATE_DEFAULT, (), Stage.SINGLE_PASS)])
 
 
+class TestNinjaPathEscape(TestBase):
+  def test_escape(self):
+    escaped = pytype_runner.escape_ninja_path("C:/xyz")
+    if sys.platform == 'win32':
+      self.assertEqual(escaped, 'C$:/xyz')
+    else:
+      self.assertEqual(escaped, 'C:/xyz')
+
+  def test_already_escaped(self):
+    self.assertEqual(pytype_runner.escape_ninja_path('C$:/xyz'), 'C$:/xyz')
+
+
 class TestNinjaPreamble(TestBase):
   """Tests for PytypeRunner.write_ninja_preamble."""
 
@@ -412,8 +424,6 @@ class TestNinjaPreamble(TestBase):
       else:
         self.assertRegex(line, r'  description = \w* \$module')
 
-# TODO testcase for windows should be added
-@test_utils.skipOnWin32("Ninja uses `$:` to escape `:`")
 class TestNinjaBuildStatement(TestBase):
   """Tests for PytypeRunner.write_build_statement."""
 
@@ -434,19 +444,19 @@ class TestNinjaBuildStatement(TestBase):
   def test_check(self):
     _, output, build_statement = self.write_build_statement(
         Module('', 'foo.py', 'foo'), Action.CHECK, set(), 'imports', '')
-    self.assertEqual(build_statement[0], f'build {output}: check foo.py')
+    self.assertEqual(build_statement[0], f'build {pytype_runner.escape_ninja_path(output)}: check foo.py')
 
   def test_infer(self):
     _, output, build_statement = self.write_build_statement(
         Module('', 'foo.py', 'foo'), Action.INFER, set(), 'imports', '')
-    self.assertEqual(build_statement[0], f'build {output}: infer foo.py')
+    self.assertEqual(build_statement[0], f'build {pytype_runner.escape_ninja_path(output)}: infer foo.py')
 
   def test_deps(self):
     _, output, _ = self.write_build_statement(
         Module('', 'foo.py', 'foo'), Action.INFER, set(), 'imports', '')
     _, _, build_statement = self.write_build_statement(
-        Module('', 'bar.py', 'bar'), Action.CHECK, {output}, 'imports', '')
-    self.assertTrue(build_statement[0].endswith(' | ' + output))
+        Module('', 'bar.py', 'bar'), Action.CHECK, {pytype_runner.escape_ninja_path(output)}, 'imports', '')
+    self.assertTrue(build_statement[0].endswith(' | ' + pytype_runner.escape_ninja_path(output)))
 
   def test_imports(self):
     _, _, build_statement = self.write_build_statement(
@@ -464,27 +474,26 @@ class TestNinjaBuildStatement(TestBase):
     self.assertEqual(path_tools.join(runner.pyi_dir, 'foo.pyi-1'), output)
 
   def test_hidden_dir(self):
-    self.assertOutputMatches(Module('', '.foo/bar.py', '.foo.bar'),
+    self.assertOutputMatches(Module('', file_utils.replace_seperator('.foo/bar.py'), '.foo.bar'),
                              path_tools.join('.foo', 'bar.pyi'))
 
   def test_hidden_file(self):
-    self.assertOutputMatches(Module('', 'foo/.bar.py', 'foo..bar'),
+    self.assertOutputMatches(Module('', file_utils.replace_seperator('foo/.bar.py'), 'foo..bar'),
                              path_tools.join('foo', '.bar.pyi'))
 
   def test_hidden_file_with_path_prefix(self):
-    self.assertOutputMatches(Module('', 'foo/.bar.py', '.bar'),
+    self.assertOutputMatches(Module('', file_utils.replace_seperator('foo/.bar.py'), '.bar'),
                              path_tools.join('.bar.pyi'))
 
   def test_hidden_dir_with_path_mismatch(self):
-    self.assertOutputMatches(Module('', 'symlinked/foo.py', '.bar'), '.bar.pyi')
+    self.assertOutputMatches(Module('', file_utils.replace_seperator('symlinked/foo.py'), '.bar'), '.bar.pyi')
 
   def test_path_mismatch(self):
-    self.assertOutputMatches(Module('', 'symlinked/foo.py', 'bar.baz'),
+    self.assertOutputMatches(Module('', file_utils.replace_seperator('symlinked/foo.py'), 'bar.baz'),
                              path_tools.join('bar', 'baz.pyi'))
 
 
-# TODO testcase for windows should be added
-@test_utils.skipOnWin32("Ninja uses `$:` to escape `:`")
+
 class TestNinjaBody(TestBase):
   """Test PytypeRunner.setup_build."""
 
@@ -495,13 +504,13 @@ class TestNinjaBody(TestBase):
   def assertBuildStatementMatches(self, build_statement, expected):
     self.assertEqual(build_statement[0],
                      'build {output}: {action} {input}{deps}'.format(
-                         output=expected.output,
+                         output=pytype_runner.escape_ninja_path(expected.output),
                          action=expected.action,
-                         input=expected.input,
-                         deps=expected.deps))
+                         input=pytype_runner.escape_ninja_path(expected.input),
+                         deps=pytype_runner.escape_ninja_path(expected.deps)))
     self.assertEqual(set(build_statement[1:]),
-                     {f'  imports = {expected.imports}',
-                      f'  module = {expected.module}'})
+                     {f'  imports = {pytype_runner.escape_ninja_path(expected.imports)}',
+                      f'  module = {pytype_runner.escape_ninja_path(expected.module)}'})
 
   def test_basic(self):
     src = Module('', 'foo.py', 'foo')
