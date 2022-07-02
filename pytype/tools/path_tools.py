@@ -37,4 +37,4 @@ basename = os.path.basename
 split = os.path.split
 isfile = os.path.isfile
 
-sep = os.path.sep 
+sep = os.path.sep

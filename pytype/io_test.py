@@ -123,7 +123,8 @@ class IOTest(unittest.TestCase):
       if filename == "my_amazing_file.py":
         return builtins_io.StringIO("x = 0.0")
       else:
-        return open(filename, *args, **kwargs)  # pylint: disable=consider-using-with
+        return open(filename, *args, **
+                    kwargs)  # pylint: disable=consider-using-with
     options = config.Options.create(
         "my_amazing_file.py", check=False, open_function=mock_open)
     _, pyi_string, _ = io.check_or_generate_pyi(options)

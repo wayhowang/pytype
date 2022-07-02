@@ -129,7 +129,7 @@ def merge_from_file(metrics_file):
       _validate_metric_name(metric.name)
       _registered_metrics[metric.name] = metric
     else:
-      if type(metric) != type(existing):  # pylint: disable=unidiomatic-typecheck
+      if type(metric)!=type(existing): # pylint: disable=unidiomatic-typecheck
         raise TypeError("Cannot merge metrics of different types.")
       existing._merge(metric)  # pylint: disable=protected-access
 

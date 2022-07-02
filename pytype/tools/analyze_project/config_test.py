@@ -42,7 +42,8 @@ class TestBase(unittest.TestCase):
     self.assertFalse(hasattr(conf, 'output'))
     self.assertEqual(conf.pythonpath, [
         path,
-        f"{'C:' if sys.platform == 'win32' else ''}" + file_utils.replace_seperator("/foo/bar"),
+        f"{'C:' if sys.platform == 'win32' else ''}" + \
+          file_utils.replace_seperator("/foo/bar"),
         path_tools.join(path, file_utils.replace_seperator('baz/quux'))
     ])
     self.assertEqual(conf.python_version, '3.7')
@@ -74,7 +75,8 @@ class TestFileConfig(TestBase):
 
   def test_read_nonexistent(self):
     conf = config.FileConfig()
-    self.assertIsNone(conf.read_from_file(file_utils.replace_seperator('/does/not/exist/test.cfg')))
+    self.assertIsNone(conf.read_from_file(
+      file_utils.replace_seperator('/does/not/exist/test.cfg')))
     self._validate_empty_contents(conf)
 
   def test_read_bad_format(self):
@@ -124,8 +126,9 @@ class TestGenerateConfig(unittest.TestCase):
 
   def test_bad_location(self):
     with self.assertRaises(SystemExit):
-      config.generate_sample_config_or_die(file_utils.replace_seperator('/does/not/exist/sample.cfg'),
-                                           self.parser.pytype_single_args)
+      config.generate_sample_config_or_die(
+        file_utils.replace_seperator('/does/not/exist/sample.cfg'),
+        self.parser.pytype_single_args)
 
   def test_existing_file(self):
     with file_utils.Tempdir() as d:

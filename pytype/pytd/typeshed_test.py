@@ -63,8 +63,10 @@ class TestTypeshedLoading(parser_test_base.ParserTest):
       # Check that get_pytd_paths() works with a typeshed installation that
       # reads from TYPESHED_HOME.
 
-      paths = {p.rsplit(file_utils.replace_seperator("pytype/"), 1)[-1] for p in self.ts.get_pytd_paths()}
-      self.assertSetEqual(paths, {file_utils.replace_seperator("stubs/builtins"), file_utils.replace_seperator("stubs/stdlib")})
+      paths = {p.rsplit(file_utils.replace_seperator("pytype/"), 1)
+                        [-1] for p in self.ts.get_pytd_paths()}
+      self.assertSetEqual(paths, {file_utils.replace_seperator(
+        "stubs/builtins"), file_utils.replace_seperator("stubs/stdlib")})
     finally:
       os.environ = old_env
 
@@ -82,7 +84,8 @@ class TestTypeshedLoading(parser_test_base.ParserTest):
     self.ts._env_home = None
     self.ts._stdlib_versions["foo"] = ((3, 8), None)
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("stdlib/foo.pyi"), b"x: int\r\n")
+      d.create_file(file_utils.replace_seperator(
+        "stdlib/foo.pyi"), b"x: int\r\n")
       self.ts._root = d.path
       _, src = self.ts.get_module_file("stdlib", "foo", (3, 8))
     self.assertEqual(src, "x: int\n")
@@ -90,7 +93,8 @@ class TestTypeshedLoading(parser_test_base.ParserTest):
   def test_carriage_return_custom_root(self):
     self.ts._stdlib_versions["foo"] = ((3, 8), None)
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("stdlib/foo.pyi"), b"x: int\r\n")
+      d.create_file(file_utils.replace_seperator(
+        "stdlib/foo.pyi"), b"x: int\r\n")
       self.ts._env_home = d.path
       _, src = self.ts.get_module_file("stdlib", "foo", (3, 8))
     self.assertEqual(src, "x: int\n")

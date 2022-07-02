@@ -154,7 +154,9 @@ class IndexerTest(test_base.BaseTest, IndexerTestMixin):
           ("y", ":module:", "x/y.py"),
       }
 
-      expected = set(map(lambda x: (x[0], x[1], file_utils.replace_seperator(x[2])), expected))
+      expected = set(
+        map(lambda x: (
+          x[0], x[1], file_utils.replace_seperator(x[2])), expected))
 
       # Resolve filepaths within the tempdir.
       expected = [(ref, target, d[path]) for (ref, target, path) in expected]
@@ -166,7 +168,8 @@ class IndexerTest(test_base.BaseTest, IndexerTestMixin):
         def f(x):
           return 42
     """)
-    options = config.Options.create(file_utils.replace_seperator("/path/to/nonexistent/file.py"))
+    options = config.Options.create(
+      file_utils.replace_seperator("/path/to/nonexistent/file.py"))
     options.tweak(version=self.python_version)
     ix = indexer.process_file(options, source_text=code)
     self.assertDef(ix, "module.f", "f", "FunctionDef")

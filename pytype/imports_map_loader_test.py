@@ -28,24 +28,34 @@ class ImportMapLoaderTest(unittest.TestCase):
       self.assertCountEqual(
           imports_map_loader._read_imports_map(fi.name, open).items(),
           [
-              (file_utils.replace_seperator("a/b/__init__"), [file_utils.replace_seperator("prefix/1/a/b/__init__.py~")]),
-              (file_utils.replace_seperator("a/b/b"), [file_utils.replace_seperator("prefix/1/a/b/b.py~suffix")]),
-              (file_utils.replace_seperator("a/b/c"), [file_utils.replace_seperator("prefix/1/a/b/c.pyi~")]),
-              (file_utils.replace_seperator("a/b/d"), [file_utils.replace_seperator("prefix/1/a/b/d.py~")]),
-              (file_utils.replace_seperator("a/b/e"), [file_utils.replace_seperator("2/a/b/foo/#2.py~"), file_utils.replace_seperator("2/a/b/e1.py~"), file_utils.replace_seperator("2/a/b/e2.py~")]),
+              (file_utils.replace_seperator("a/b/__init__"),
+               [file_utils.replace_seperator("prefix/1/a/b/__init__.py~")]),
+              (file_utils.replace_seperator("a/b/b"),
+               [file_utils.replace_seperator("prefix/1/a/b/b.py~suffix")]),
+              (file_utils.replace_seperator("a/b/c"),
+               [file_utils.replace_seperator("prefix/1/a/b/c.pyi~")]),
+              (file_utils.replace_seperator("a/b/d"),
+               [file_utils.replace_seperator("prefix/1/a/b/d.py~")]),
+              (file_utils.replace_seperator("a/b/e"),
+                [file_utils.replace_seperator("2/a/b/foo/#2.py~"),
+                 file_utils.replace_seperator("2/a/b/e1.py~"),
+                 file_utils.replace_seperator("2/a/b/e2.py~")]),
           ])
 
   def test_do_not_filter(self):
     with file_utils.Tempdir() as d:
       d.create_file(file_utils.replace_seperator("a/b/c.pyi"))
-      imports_info = f"{file_utils.replace_seperator('a/b/c.pyi')} {d[file_utils.replace_seperator('a/b/c.pyi')]}\n"
+      imports_info = f"{file_utils.replace_seperator('a/b/c.pyi')} \
+        {d[file_utils.replace_seperator('a/b/c.pyi')]}\n"
       d.create_file("imports_info", imports_info)
       imports_map = imports_map_loader.build_imports_map(d["imports_info"])
-      self.assertEqual(imports_map[file_utils.replace_seperator("a/b/c")], d[file_utils.replace_seperator("a/b/c.pyi")])
+      self.assertEqual(imports_map[file_utils.replace_seperator(
+        "a/b/c")], d[file_utils.replace_seperator("a/b/c.pyi")])
 
   def test_invalid_map_entry(self):
     with file_utils.Tempdir() as d:
-      imports_info = f"{file_utils.replace_seperator('a/b/c.pyi')} {d[file_utils.replace_seperator('a/b/c.pyi')]}\n"
+      imports_info = f"{file_utils.replace_seperator('a/b/c.pyi')} \
+        {d[file_utils.replace_seperator('a/b/c.pyi')]}\n"
       d.create_file("imports_info", imports_info)
       with self.assertRaises(ValueError):
         imports_map_loader.build_imports_map(d["imports_info"])

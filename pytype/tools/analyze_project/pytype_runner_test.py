@@ -444,19 +444,25 @@ class TestNinjaBuildStatement(TestBase):
   def test_check(self):
     _, output, build_statement = self.write_build_statement(
         Module('', 'foo.py', 'foo'), Action.CHECK, set(), 'imports', '')
-    self.assertEqual(build_statement[0], f'build {pytype_runner.escape_ninja_path(output)}: check foo.py')
+    self.assertEqual(
+      build_statement[0],
+      f'build {pytype_runner.escape_ninja_path(output)}: check foo.py')
 
   def test_infer(self):
     _, output, build_statement = self.write_build_statement(
         Module('', 'foo.py', 'foo'), Action.INFER, set(), 'imports', '')
-    self.assertEqual(build_statement[0], f'build {pytype_runner.escape_ninja_path(output)}: infer foo.py')
+    self.assertEqual(
+      build_statement[0],
+      f'build {pytype_runner.escape_ninja_path(output)}: infer foo.py')
 
   def test_deps(self):
     _, output, _ = self.write_build_statement(
         Module('', 'foo.py', 'foo'), Action.INFER, set(), 'imports', '')
     _, _, build_statement = self.write_build_statement(
-        Module('', 'bar.py', 'bar'), Action.CHECK, {pytype_runner.escape_ninja_path(output)}, 'imports', '')
-    self.assertTrue(build_statement[0].endswith(' | ' + pytype_runner.escape_ninja_path(output)))
+        Module('', 'bar.py', 'bar'), Action.CHECK,
+        {pytype_runner.escape_ninja_path(output)}, 'imports', '')
+    self.assertTrue(build_statement[0].endswith(
+      ' | ' + pytype_runner.escape_ninja_path(output)))
 
   def test_imports(self):
     _, _, build_statement = self.write_build_statement(
@@ -474,23 +480,30 @@ class TestNinjaBuildStatement(TestBase):
     self.assertEqual(path_tools.join(runner.pyi_dir, 'foo.pyi-1'), output)
 
   def test_hidden_dir(self):
-    self.assertOutputMatches(Module('', file_utils.replace_seperator('.foo/bar.py'), '.foo.bar'),
-                             path_tools.join('.foo', 'bar.pyi'))
+    self.assertOutputMatches(
+      Module('', file_utils.replace_seperator('.foo/bar.py'), '.foo.bar'),
+      path_tools.join('.foo', 'bar.pyi'))
 
   def test_hidden_file(self):
-    self.assertOutputMatches(Module('', file_utils.replace_seperator('foo/.bar.py'), 'foo..bar'),
-                             path_tools.join('foo', '.bar.pyi'))
+    self.assertOutputMatches(
+      Module('', file_utils.replace_seperator('foo/.bar.py'), 'foo..bar'),
+      path_tools.join('foo', '.bar.pyi'))
 
   def test_hidden_file_with_path_prefix(self):
-    self.assertOutputMatches(Module('', file_utils.replace_seperator('foo/.bar.py'), '.bar'),
-                             path_tools.join('.bar.pyi'))
+    self.assertOutputMatches(
+      Module('', file_utils.replace_seperator('foo/.bar.py'), '.bar'),
+      path_tools.join('.bar.pyi'))
 
   def test_hidden_dir_with_path_mismatch(self):
-    self.assertOutputMatches(Module('', file_utils.replace_seperator('symlinked/foo.py'), '.bar'), '.bar.pyi')
+    self.assertOutputMatches(
+      Module(
+        '',
+        file_utils.replace_seperator('symlinked/foo.py'), '.bar'), '.bar.pyi')
 
   def test_path_mismatch(self):
-    self.assertOutputMatches(Module('', file_utils.replace_seperator('symlinked/foo.py'), 'bar.baz'),
-                             path_tools.join('bar', 'baz.pyi'))
+    self.assertOutputMatches(
+      Module('', file_utils.replace_seperator('symlinked/foo.py'), 'bar.baz'),
+      path_tools.join('bar', 'baz.pyi'))
 
 
 
@@ -504,13 +517,15 @@ class TestNinjaBody(TestBase):
   def assertBuildStatementMatches(self, build_statement, expected):
     self.assertEqual(build_statement[0],
                      'build {output}: {action} {input}{deps}'.format(
-                         output=pytype_runner.escape_ninja_path(expected.output),
+                         output=pytype_runner.escape_ninja_path(
+                           expected.output),
                          action=expected.action,
                          input=pytype_runner.escape_ninja_path(expected.input),
                          deps=pytype_runner.escape_ninja_path(expected.deps)))
-    self.assertEqual(set(build_statement[1:]),
-                     {f'  imports = {pytype_runner.escape_ninja_path(expected.imports)}',
-                      f'  module = {pytype_runner.escape_ninja_path(expected.module)}'})
+    self.assertEqual(
+      set(build_statement[1:]),
+      {f'  imports = {pytype_runner.escape_ninja_path(expected.imports)}',
+       f'  module = {pytype_runner.escape_ninja_path(expected.module)}'})
 
   def test_basic(self):
     src = Module('', 'foo.py', 'foo')

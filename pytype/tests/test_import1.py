@@ -261,8 +261,10 @@ class ImportTest(test_base.BaseTest):
 
   def test_import_directory(self):
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("sub/other_file.pyi"), "def f() -> int: ...")
-      d.create_file(file_utils.replace_seperator("sub/bar/baz.pyi"), "def g() -> float: ...")
+      d.create_file(file_utils.replace_seperator(
+        "sub/other_file.pyi"), "def f() -> int: ...")
+      d.create_file(file_utils.replace_seperator(
+        "sub/bar/baz.pyi"), "def g() -> float: ...")
       d.create_file(file_utils.replace_seperator("sub/__init__.pyi"), "")
       d.create_file(file_utils.replace_seperator("sub/bar/__init__.pyi"), "")
       d.create_file("main.py", """
@@ -340,14 +342,18 @@ class ImportTest(test_base.BaseTest):
 
   def test_relative_import(self):
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("foo/baz.pyi"), """x = ...  # type: int""")
+      d.create_file(file_utils.replace_seperator(
+        "foo/baz.pyi"), """x = ...  # type: int""")
       d.create_file(file_utils.replace_seperator("foo/bar.py"), """
         from . import baz
         def f():
           return baz.x
       """)
       d.create_file(file_utils.replace_seperator("foo/__init__.pyi"), "")
-      ty = self.InferFromFile(filename=d[file_utils.replace_seperator("foo/bar.py")], pythonpath=[d.path])
+      ty = self.InferFromFile(
+        filename=d[
+          file_utils.replace_seperator("foo/bar.py")],
+          pythonpath=[d.path])
       self.assertTypesMatchPytd(ty, """
         from foo import baz
         def f() -> int: ...
@@ -360,10 +366,13 @@ class ImportTest(test_base.BaseTest):
       d.create_file(file_utils.replace_seperator("up1/foo.py"), """
         from .bar import x
       """)
-      d.create_file(file_utils.replace_seperator("up1/bar.pyi"), """x = ...  # type: int""")
+      d.create_file(file_utils.replace_seperator(
+        "up1/bar.pyi"), """x = ...  # type: int""")
       d.create_file(file_utils.replace_seperator("up1/__init__.pyi"), "")
       d.create_file("__init__.pyi", "")
-      ty = self.InferFromFile(filename=d[file_utils.replace_seperator("up1/foo.py")], pythonpath=[d.path])
+      ty = self.InferFromFile(
+        filename=d[file_utils.replace_seperator("up1/foo.py")],
+        pythonpath=[d.path])
       self.assertTypesMatchPytd(ty, """
         x = ...  # type: int
     """)
@@ -374,11 +383,14 @@ class ImportTest(test_base.BaseTest):
       d.create_file(file_utils.replace_seperator("up2/baz/foo.py"), """
         from ..bar import x
       """)
-      d.create_file(file_utils.replace_seperator("up2/bar.pyi"), """x = ...  # type: int""")
+      d.create_file(file_utils.replace_seperator(
+        "up2/bar.pyi"), """x = ...  # type: int""")
       d.create_file("__init__.pyi", "")
       d.create_file(file_utils.replace_seperator("up2/__init__.pyi"), "")
       d.create_file(file_utils.replace_seperator("up2/baz/__init__.pyi"), "")
-      ty = self.InferFromFile(filename=d[file_utils.replace_seperator("up2/baz/foo.py")], pythonpath=[d.path])
+      ty = self.InferFromFile(
+        filename=d[file_utils.replace_seperator("up2/baz/foo.py")],
+        pythonpath=[d.path])
       self.assertTypesMatchPytd(ty, """
         x = ...  # type: int
       """)
@@ -400,14 +412,17 @@ class ImportTest(test_base.BaseTest):
         from ..bar import x
       """)
       d.create_file("bar.pyi", """x = ...  # type: int""")
-      ty = self.InferFromFile(filename=d[file_utils.replace_seperator("baz/foo.py")], pythonpath=[d.path])
+      ty = self.InferFromFile(
+        filename=d[file_utils.replace_seperator("baz/foo.py")],
+        pythonpath=[d.path])
       self.assertTypesMatchPytd(ty, """
         x = ...  # type: int
       """)
 
   def test_dot_dot(self):
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("foo/baz.pyi"), """x = ...  # type: int""")
+      d.create_file(file_utils.replace_seperator(
+        "foo/baz.pyi"), """x = ...  # type: int""")
       d.create_file(file_utils.replace_seperator("foo/deep/bar.py"), """
         from .. import baz
         def f():
@@ -415,8 +430,9 @@ class ImportTest(test_base.BaseTest):
       """)
       d.create_file(file_utils.replace_seperator("foo/__init__.pyi"), "")
       d.create_file(file_utils.replace_seperator("foo/deep/__init__.pyi"), "")
-      ty = self.InferFromFile(filename=d[file_utils.replace_seperator("foo/deep/bar.py")],
-                              pythonpath=[d.path])
+      ty = self.InferFromFile(
+        filename=d[file_utils.replace_seperator("foo/deep/bar.py")],
+        pythonpath=[d.path])
       self.assertTypesMatchPytd(ty, """
         from foo import baz
         def f() -> int: ...
@@ -428,7 +444,8 @@ class ImportTest(test_base.BaseTest):
       d.create_file(file_utils.replace_seperator("up2/baz/foo.pyi"), """
         from ..bar import X
       """)
-      d.create_file(file_utils.replace_seperator("up2/bar.pyi"), "class X: ...")
+      d.create_file(
+        file_utils.replace_seperator("up2/bar.pyi"), "class X: ...")
       d.create_file("top.py", """
                     from up2.baz.foo import X
                     x = X()
@@ -449,8 +466,9 @@ class ImportTest(test_base.BaseTest):
         from .. import baz
         a = baz.x
       """)
-      ty = self.InferFromFile(filename=d[file_utils.replace_seperator("foo/deep/bar.py")],
-                              pythonpath=[d.path])
+      ty = self.InferFromFile(
+        filename=d[file_utils.replace_seperator("foo/deep/bar.py")],
+        pythonpath=[d.path])
       self.assertTypesMatchPytd(ty, """
         from foo import baz
         a: int
@@ -459,7 +477,8 @@ class ImportTest(test_base.BaseTest):
   def test_too_many_dots_in_package_in_pyi(self):
     # Trying to go up more directories than the package path contains
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("up/foo.pyi"), "from ..bar import X")
+      d.create_file(file_utils.replace_seperator(
+        "up/foo.pyi"), "from ..bar import X")
       d.create_file(file_utils.replace_seperator("up/bar.pyi"), "class X: ...")
       _, err = self.InferWithErrors(
           "from up.foo import X  # pyi-error[e]", pythonpath=[d.path])
@@ -488,14 +507,16 @@ class ImportTest(test_base.BaseTest):
     # not raise an unreplaced NamedType error.
     with file_utils.Tempdir() as d:
       d.create_file(file_utils.replace_seperator("foo/a.pyi"), "class X: ...")
-      d.create_file(file_utils.replace_seperator("foo/b.pyi"), "from . import a")
+      d.create_file(file_utils.replace_seperator(
+        "foo/b.pyi"), "from . import a")
       self.Check("import foo.b", pythonpath=[d.path])
 
   def test_file_import1(self):
     with file_utils.Tempdir() as d:
       d.create_file(file_utils.replace_seperator("path/to/some/module.pyi"),
                     "def foo(x:int) -> str: ...")
-      d.create_file(file_utils.replace_seperator("path/to/some/__init__.pyi"), "")
+      d.create_file(file_utils.replace_seperator(
+        "path/to/some/__init__.pyi"), "")
       d.create_file(file_utils.replace_seperator("path/to/__init__.pyi"), "")
       d.create_file(file_utils.replace_seperator("path/__init__.pyi"), "")
       ty = self.Infer("""
@@ -512,7 +533,8 @@ class ImportTest(test_base.BaseTest):
     with file_utils.Tempdir() as d:
       d.create_file(file_utils.replace_seperator("path/to/some/module.pyi"),
                     "def foo(x:int) -> str: ...")
-      d.create_file(file_utils.replace_seperator("path/to/some/__init__.pyi"), "")
+      d.create_file(file_utils.replace_seperator(
+        "path/to/some/__init__.pyi"), "")
       d.create_file(file_utils.replace_seperator("path/to/__init__.pyi"), "")
       d.create_file(file_utils.replace_seperator("path/__init__.pyi"), "")
       ty = self.Infer("""
@@ -909,9 +931,11 @@ class ImportTest(test_base.BaseTest):
     submod_pyi_1, _ = self.InferWithErrors(submod_py, module_name="mod.submod")
     with file_utils.Tempdir() as d:
       init_path = d.create_file(
-          file_utils.replace_seperator("mod/__init__.pyi"), pytd_utils.Print(init_pyi_1))
+          file_utils.replace_seperator("mod/__init__.pyi"),
+          pytd_utils.Print(init_pyi_1))
       submod_path = d.create_file(
-          file_utils.replace_seperator("mod/submod.pyi"), pytd_utils.Print(submod_pyi_1))
+          file_utils.replace_seperator("mod/submod.pyi"),
+          pytd_utils.Print(submod_pyi_1))
       imports_info = d.create_file("imports_info", f"""
         {file_utils.replace_seperator('mod/__init__')} {init_path}
         {file_utils.replace_seperator('mod/submod')} {submod_path}
@@ -952,9 +976,11 @@ class ImportTest(test_base.BaseTest):
         init_py % "  # import-error", module_name="mod.__init__")
     with file_utils.Tempdir() as d:
       submod_path = d.create_file(
-          file_utils.replace_seperator("mod/submod.pyi"), pytd_utils.Print(submod_pyi_1))
+          file_utils.replace_seperator("mod/submod.pyi"),
+          pytd_utils.Print(submod_pyi_1))
       init_path = d.create_file(
-          file_utils.replace_seperator("mod/__init__.pyi"), pytd_utils.Print(init_pyi_1))
+          file_utils.replace_seperator("mod/__init__.pyi"),
+          pytd_utils.Print(init_pyi_1))
       imports_info = d.create_file("imports_info", f"""
         {file_utils.replace_seperator('mod/submod')} {submod_path}
         {file_utils.replace_seperator('mod/__init__')} {init_path}
@@ -1145,8 +1171,10 @@ class ImportTest(test_base.BaseTest):
 
   def test_relative_star_import(self):
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("foo/bar.pyi"), "from .baz.qux import *")
-      d.create_file(file_utils.replace_seperator("foo/baz/qux.pyi"), "v = ...  # type: int")
+      d.create_file(file_utils.replace_seperator(
+        "foo/bar.pyi"), "from .baz.qux import *")
+      d.create_file(file_utils.replace_seperator(
+        "foo/baz/qux.pyi"), "v = ...  # type: int")
       ty = self.Infer("""
         from foo.bar import *
       """, pythonpath=[d.path])
@@ -1156,8 +1184,10 @@ class ImportTest(test_base.BaseTest):
 
   def test_relative_star_import2(self):
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("foo/bar/baz.pyi"), "from ..bar.qux import *")
-      d.create_file(file_utils.replace_seperator("foo/bar/qux.pyi"), "v = ...  # type: int")
+      d.create_file(file_utils.replace_seperator(
+        "foo/bar/baz.pyi"), "from ..bar.qux import *")
+      d.create_file(file_utils.replace_seperator(
+        "foo/bar/qux.pyi"), "v = ...  # type: int")
       ty = self.Infer("""
         from foo.bar.baz import *
       """, pythonpath=[d.path])
@@ -1169,8 +1199,10 @@ class ImportTest(test_base.BaseTest):
     """Fail when accessing a submodule we haven't imported."""
     self.options.tweak(strict_import=True)
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("sub/bar/baz.pyi"), "class A: ...")
-      d.create_file(file_utils.replace_seperator("sub/bar/quux.pyi"), "class B: ...")
+      d.create_file(file_utils.replace_seperator(
+        "sub/bar/baz.pyi"), "class A: ...")
+      d.create_file(file_utils.replace_seperator(
+        "sub/bar/quux.pyi"), "class B: ...")
       d.create_file(file_utils.replace_seperator("sub/__init__.pyi"), "")
       d.create_file(file_utils.replace_seperator("sub/bar/__init__.pyi"), "")
       _, errors = self.InferWithErrors("""
@@ -1182,7 +1214,8 @@ class ImportTest(test_base.BaseTest):
 
   def test_submodule_attribute_error(self):
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("package/__init__.pyi"), "submodule: module")
+      d.create_file(file_utils.replace_seperator(
+        "package/__init__.pyi"), "submodule: module")
       d.create_file(file_utils.replace_seperator("package/submodule.pyi"), "")
       self.CheckWithErrors("""
         from package import submodule
@@ -1192,7 +1225,8 @@ class ImportTest(test_base.BaseTest):
   def test_init_only_submodule(self):
     """Test a submodule without its own stub file."""
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("package/__init__.pyi"), "submodule: module")
+      d.create_file(file_utils.replace_seperator(
+        "package/__init__.pyi"), "submodule: module")
       self.Check("""
         from package import submodule
         submodule.asd
@@ -1210,7 +1244,8 @@ class ImportTest(test_base.BaseTest):
 
   def test_subpackage(self):
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("foo/__init__.pyi"), "from .bar import baz as baz")
+      d.create_file(file_utils.replace_seperator(
+        "foo/__init__.pyi"), "from .bar import baz as baz")
       d.create_file(file_utils.replace_seperator("foo/bar/baz.pyi"), "v: str")
       ty = self.Infer("""
         import foo
@@ -1223,7 +1258,8 @@ class ImportTest(test_base.BaseTest):
 
   def test_attr_and_module(self):
     with file_utils.Tempdir() as d:
-      d.create_file(file_utils.replace_seperator("foo/__init__.pyi"), "class X: ...")
+      d.create_file(file_utils.replace_seperator(
+        "foo/__init__.pyi"), "class X: ...")
       d.create_file(file_utils.replace_seperator("foo/bar.pyi"), "v: str")
       d.create_file("other.pyi", """
         from foo import X as X
@@ -1258,7 +1294,8 @@ class ImportTest(test_base.BaseTest):
   def test_directory_module_clash(self):
     with file_utils.Tempdir() as d:
       foo = d.create_file("foo.pyi", "x: int")
-      foo_bar = d.create_file(file_utils.replace_seperator("foo/bar.pyi"), "y: str")
+      foo_bar = d.create_file(
+        file_utils.replace_seperator("foo/bar.pyi"), "y: str")
       imports_info = d.create_file("imports_info", f"""
         foo {foo}
         {file_utils.replace_seperator('foo/bar')} {foo_bar}
@@ -1273,9 +1310,12 @@ class ImportTest(test_base.BaseTest):
 
   def test_missing_submodule(self):
     with file_utils.Tempdir() as d:
-      foo = d.create_file(file_utils.replace_seperator("foo/__init__.pyi"), "import bar.baz as baz")
-      foo_bar = d.create_file(file_utils.replace_seperator("foo/bar.pyi"), "y: str")
-      imports_info = d.create_file(file_utils.replace_seperator("imports_info"), f"""
+      foo = d.create_file(file_utils.replace_seperator(
+        "foo/__init__.pyi"), "import bar.baz as baz")
+      foo_bar = d.create_file(
+        file_utils.replace_seperator("foo/bar.pyi"), "y: str")
+      imports_info = d.create_file(
+        file_utils.replace_seperator("imports_info"), f"""
         foo {foo}
         {file_utils.replace_seperator('foo/bar')} {foo_bar}
       """)

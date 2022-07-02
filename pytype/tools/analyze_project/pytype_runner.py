@@ -263,7 +263,8 @@ class PytypeRunner:
           modules.append((module, action))
       if len(modules) == 1:
         # TODO(b/73562531): Remove the pytype disable once the bug is fixed.
-        yield modules[0] + (deps, Stage.SINGLE_PASS)  # pytype: disable=bad-return-type
+        # pytype: disable=bad-return-type
+        yield modules[0] + (deps, Stage.SINGLE_PASS)
       else:
         # If we have a cycle we run pytype over the files twice. So that we
         # don't fail on missing dependencies, we'll ignore errors the first
@@ -319,7 +320,8 @@ class PytypeRunner:
                   output=escape_ninja_path(output),
                   action=action,
                   input=escape_ninja_path(module.full_path),
-                  deps=' | ' + escape_ninja_path(' '.join(deps)) if deps else '',
+                  deps=' | ' + \
+                    escape_ninja_path(' '.join(deps)) if deps else '',
                   imports=escape_ninja_path(imports),
                   module=module.name))
     return output
