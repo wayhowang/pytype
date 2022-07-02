@@ -287,7 +287,8 @@ class MatchTest(test_base.BaseTest):
         "e": r"Callable\[\[T\], T\].*Callable\[\[AnyStr\], AnyStr\]"})
 
   # TODO: fix it
-  @test_utils.skipOnWin32("This testcase don't pass in windows for unknown reason")
+  @test_utils.skipOnWin32("This testcase don't pass in windows \
+    for unknown reason")
   def test_filter_return(self):
     # See b/155895991 for context.
     self.Check("""

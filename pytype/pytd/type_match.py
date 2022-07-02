@@ -234,7 +234,8 @@ class TypeMatch(pytd_utils.TypeMatcher):
 
   def match_Generic_against_Unknown(self, t1, t2, subst):  # pylint: disable=invalid-name
     # Note: This flips p1 and p2 above.
-    return self.match_Unknown_against_Generic(t2, t1, subst)  # pylint: disable=arguments-out-of-order
+    return self.match_Unknown_against_Generic(
+      t2, t1, subst)  # pylint: disable=arguments-out-of-order
 
   def maybe_lookup_type_param(self, t, subst):
     while isinstance(t, pytd.TypeParameter):

@@ -74,7 +74,9 @@ class ParserTest(test_base.UnitTest):
       # environment variable to control what output you want. Set
       # PY_UNITTEST_DIFF to get diff output.
       if os.getenv("PY_UNITTEST_DIFF"):
-        self.maxDiff = None  # for better diff output (assertMultiLineEqual)  # pylint: disable=invalid-name
+        # for better diff output (assertMultiLineEqual)  # pylint:
+        # disable=invalid-name
+        self.maxDiff = None
         self.assertMultiLineEqual(src1, src2)
       else:
         sys.stdout.flush()

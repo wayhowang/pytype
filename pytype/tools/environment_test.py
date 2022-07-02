@@ -1,8 +1,6 @@
 """Tests for environment.py."""
 
-from isort import file
 from pytype.tools import path_tools
-
 from pytype import file_utils
 from pytype.tools import environment
 import unittest

@@ -692,7 +692,8 @@ def combine_substs(
 ) -> Collection[Dict[str, cfg.Variable]]:
   """Combines the two collections of type parameter substitutions."""
   if substs1 and substs2:
-    return tuple({**sub1, **sub2} for sub1 in substs1 for sub2 in substs2)  # pylint: disable=g-complex-comprehension
+    return tuple({**sub1, **sub2}
+                 for sub1 in substs1 for sub2 in substs2)  # pylint: disable=g-complex-comprehension
   elif substs1:
     return substs1
   elif substs2:

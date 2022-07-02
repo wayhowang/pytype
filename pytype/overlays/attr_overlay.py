@@ -258,7 +258,8 @@ class AttrsNextGenDefine(Attrs):
   @classmethod
   def make(cls, ctx, module):
     # Bypass Attrs's make; go straight to its superclass.
-    return super(Attrs, cls).make("define", ctx, module)  # pylint: disable=bad-super-call
+    return super(Attrs, cls).make(
+      "define", ctx, module)  # pylint: disable=bad-super-call
 
   def _handle_auto_attribs(self, auto_attribs, local_ops, cls_name):
     if auto_attribs is not None:
