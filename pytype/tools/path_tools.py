@@ -9,7 +9,7 @@ def _replace_driver_code(path: str):
   drive = drive.capitalize()
   return os.path.join(drive, other)
 
-def _replace_return_path_seperator(func):
+def _capitalize_return_drive_code(func):
   if sys.platform == "win32":
     @functools.wraps(func)
     def wrapped(*args, **kwargs):
@@ -18,29 +18,17 @@ def _replace_return_path_seperator(func):
   else:
     return func
 
+splitext = os.path.splitext
+glob = glob_module.glob
 
-if sys.platform == 'win32' and False:
-  def splitext(path):
-    filename, ext = os.path.splitext(path)
-    return filename.replace(os.path.sep, '/'), ext
-
-  def glob(*args, **kwargs):
-    path_list = glob_module.glob(*args, **kwargs)
-    return list(map(lambda x: x.replace(os.path.sep, '/'), path_list))
-else:
-  splitext = os.path.splitext
-  glob = glob_module.glob
-
-
-# return path.replace(os.path.sep, '/') in win32.
-abspath = _replace_return_path_seperator(os.path.abspath)
-relpath = _replace_return_path_seperator(os.path.relpath)
-dirname = _replace_return_path_seperator(os.path.dirname)
-expanduser = _replace_return_path_seperator(os.path.expanduser)
-normpath = _replace_return_path_seperator(os.path.normpath)
-realpath = _replace_return_path_seperator(os.path.realpath)
-join = _replace_return_path_seperator(os.path.join)
-getcwd = _replace_return_path_seperator(os.getcwd)
+abspath = _capitalize_return_drive_code(os.path.abspath)
+relpath = _capitalize_return_drive_code(os.path.relpath)
+dirname = _capitalize_return_drive_code(os.path.dirname)
+expanduser = _capitalize_return_drive_code(os.path.expanduser)
+normpath = _capitalize_return_drive_code(os.path.normpath)
+realpath = _capitalize_return_drive_code(os.path.realpath)
+join = _capitalize_return_drive_code(os.path.join)
+getcwd = _capitalize_return_drive_code(os.getcwd)
 
 exists = os.path.exists
 isdir = os.path.isdir
@@ -49,4 +37,4 @@ basename = os.path.basename
 split = os.path.split
 isfile = os.path.isfile
 
-sep = os.path.sep # '/'
+sep = os.path.sep 

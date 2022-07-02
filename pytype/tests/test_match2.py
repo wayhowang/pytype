@@ -296,7 +296,7 @@ class MatchTest(test_base.BaseTest):
       def f() -> Dict[str, bytes]:
         d = collections.defaultdict(list) # type: Dict[str, list]
         for _ in range(10):
-          subdict = {}  # type: Dict[str, str]
+          subdict = {} 
           k = subdict.get('k')
           if not k:
             continue
