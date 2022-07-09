@@ -370,6 +370,9 @@ def parse_type_definition(pyi_subdir, module, options):
     Else a tuple of the filename and the AST of the module.
   """
   typeshed = _get_typeshed()
+  
+  assert typeshed is not None
+  
   try:
     filename, src = typeshed.get_module_file(
         pyi_subdir, module, options.python_version)

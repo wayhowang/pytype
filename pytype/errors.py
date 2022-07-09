@@ -402,7 +402,8 @@ class ErrorLogBase:
     return any(e._severity == SEVERITY_ERROR for e in self._errors)
 
   def _add(self, error):
-    if self._filter is None or self._filter(error):
+    m_filter = self._filter
+    if m_filter is None or m_filter(error):
       _log.info("Added error to log: %s\n%s", error.name, error)
       if _log.isEnabledFor(logging.DEBUG):
         _log.debug(debug.stack_trace(limit=1).rstrip())

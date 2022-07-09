@@ -685,7 +685,7 @@ class Loader:
                             module_name=module_name, mod_ast=mod_ast)
     return None
 
-  def _import_module_by_name(self, module_name):
+  def _import_module_by_name(self, module_name) -> Optional[_AST]:
     """Load a name like 'sys' or 'foo.bar.baz'.
 
     Args:

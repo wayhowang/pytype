@@ -62,6 +62,7 @@ def build_imports_map(options_info_path, open_function=open):
     ValueError if the imports map is invalid
   """
   imports_multimap = _read_imports_map(options_info_path, open_function)
+  assert imports_multimap is not None
 
   # Output warnings for all multiple
   # mappings and keep the lexicographically first.
