@@ -272,7 +272,7 @@ class MatchAstVisitor(visitor.BaseVisitor):
         break
       m_matched = self._matched
       assert m_matched is not None
-      if (id(tr) not in m_matched and tr.op in ops and 
+      if (id(tr) not in m_matched and tr.op in ops and
           symbol.match(tr.symbol)):
         maxmatch -= 1
         m_matched.add(id(tr))

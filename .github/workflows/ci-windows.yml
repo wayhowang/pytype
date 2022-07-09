@@ -1,0 +1,48 @@
+name: CI (Windows)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest]
+        python-url: ['https://www.python.org/ftp/python/3.10.5/python-3.10.5-amd64.exe']
+        experimental: [false]
+        
+    runs-on: ${{ matrix.os }}
+
+    continue-on-error: ${{ matrix.experimental }}
+
+    steps:
+    - name: Cancel previous
+      uses: styfle/cancel-workflow-action@0.9.1
+      with:
+        access_token: ${{ github.token }}
+    
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
+
+    - name: Download Python
+      run: Invoke-WebRequest -Uri ${{ matrix.python_url }} -OutFile python-installer.exe
+
+    - name: Install Python
+      run: ./python-installer /quite /passive Include_debug=1 PrependPath=1 TargetDir=C:\Python | more
+          
+    - uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Test
+      run: | 
+        C:/Python/python -m pip install virtualenv
+        C:/Python/python -m virtualenv venv
+        ./venv/Scripts/activate
+        $env:Lib="$env:Lib;C:/Python/Libs"
+        $env:TYPESHED_HOME="$(Join-Path $pwd typeshed)"
+        pip install -r requirements.txt
+        python build_scripts/ci_script.py

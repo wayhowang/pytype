@@ -2473,7 +2473,7 @@ class VirtualMachine:
   def _record_annotation(self, node, op, name, typ):
     # Annotations in self._director are handled by _apply_annotation.
     assert self.frame is not None and self._director is not None
-    if self.frame.current_opcode.line not in self._director.annotations: 
+    if self.frame.current_opcode.line not in self._director.annotations:
       self._record_local(node, op, name, typ)
 
   def byte_STORE_ANNOTATION(self, state, op):
